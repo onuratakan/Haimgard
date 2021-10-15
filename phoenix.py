@@ -24,20 +24,25 @@ with open(version_path, 'r', encoding='utf-8') as f:
     lines = f.readlines()
     version = lines[0]
 cowsay.cow('Phoenix Framework Version:%s' %(version))
+
+
 #exploit
-dir = pathlib.Path.cwd() / "modules" / "exploit"
+dir = pathlib.Path.cwd() / "modules" / "dos"
 count = 0
 for root,dirs,files in os.walk(dir):
     for each in files:
-        count += 1
+        if each.endswith(".py"):
+            count += 1
+print("\033[34mNumber of dos:\033[0m",count)
 
-print("\033[34mNumber of exploits:\033[0m",count)
+
 #scanner
 dir_scanners = pathlib.Path.cwd() / "modules" / "scanner"
 s_count = 0
 for root,dirs,files in os.walk(dir_scanners):
     for each in files:
-        s_count += 1
+        if each.endswith(".py"):
+            s_count += 1
 
 print("\033[34mNumber of scanners:\033[0m",s_count)
 
@@ -46,7 +51,8 @@ dir_tools = pathlib.Path.cwd() / "modules" / "tools"
 s_count = 0
 for root,dirs,files in os.walk(dir_tools):
     for each in files:
-        s_count += 1
+        if each.endswith(".py"):
+            s_count += 1
 
 print("\033[34mNumber of tools:\033[0m",s_count)
 class PhoenixShell(cmd.Cmd):
