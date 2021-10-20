@@ -74,7 +74,7 @@ class Module:
             [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"])) for user in user_list]
             console.print(table)
         else:
-            print(f"[*] Wordpress user is not detected on {target}:{port}")
+            print(f"\033[32m[-]\033[0m Wordpress user is not detected on {target}:{port}")
 
 
-        print(f"[*] Finished dedection on {target}:{port}")
+        print(f"\033[32m[-]\033[0m Finished dedection on {target}:{port}")
