@@ -149,9 +149,9 @@ class PhoenixShell(cmd.Cmd):
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
     def do_quit(self, arg):
-        "exit the Haimgard shell"
-        os.system("find . -name '*.pyc' -delete")
-        sys.exit(1)
+        "exit the module shell"
+        self.module = None
+        self.prompt = "{}haimgard{} > ".format(Fore.YELLOW, Style.RESET_ALL)
     def do_EOF(self, arg):
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
