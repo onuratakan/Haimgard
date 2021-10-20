@@ -46,6 +46,13 @@ class PhoenixShell(cmd.Cmd):
         self.module = None
         self.prompt = "{}haimgard{} > ".format(Fore.YELLOW, Style.RESET_ALL)
 
+        self.options = {
+            "target": {"value": None, "required": True},
+            "ssl": {"value": True, "required": False},
+            "port": {"value": 443, "required": False},
+            "path": {"value": "/", "required": False}
+        }        
+
     def do_list(self, arg):
         "list dos"
         if arg == "":
@@ -84,6 +91,9 @@ class PhoenixShell(cmd.Cmd):
             self.prompt = "{}haimgard{} ({}{}{}) > ".format(
                 Fore.YELLOW, Style.RESET_ALL, Fore.RED, args[0], Style.RESET_ALL
             )
+            for option in self.options:
+                if option in self.module.options:
+                    self.module.options[option]["value"] = self.options[option]["value"]
         else:
             logger.error("Module already selected")
 
@@ -115,6 +125,10 @@ class PhoenixShell(cmd.Cmd):
             logger.error("Option does not exist")
             return
         self.module.options[key]["value"] = value
+        try:
+            self.options[key]["value"] = value
+        except:
+            pass
 
 
     def do_run(self,arg):
