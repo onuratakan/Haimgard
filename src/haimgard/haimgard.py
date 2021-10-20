@@ -66,23 +66,26 @@ class PhoenixShell(cmd.Cmd):
     def do_use(self, arg):
         "use exploit/solr/cve-2019-0193"
         args = arg.split()
-        try:
-            module_path = os.path.join(this_dir, "modules", f"{args[0]}.py")
-        except:
-            logger.error("No module specified")
-            return
-        if not os.path.isfile(module_path):
-            logger.error("the specified module does not exist")
-            return
-        spec = importlib.util.spec_from_file_location("module.name", str(module_path))
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        self.module = module.Module(logger)
+        if self.module is None:
+            try:
+                module_path = os.path.join(this_dir, "modules", f"{args[0]}.py")
+            except:
+                logger.error("No module specified")
+                return
+            if not os.path.isfile(module_path):
+                logger.error("the specified module does not exist")
+                return
+            spec = importlib.util.spec_from_file_location("module.name", str(module_path))
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            self.module = module.Module(logger)
 
-        logger.success("Successfully loaded {}".format(args[0]))
-        self.prompt = "{}haimgard{} ({}{}{}) > ".format(
-            Fore.YELLOW, Style.RESET_ALL, Fore.RED, args[0], Style.RESET_ALL
-        )
+            logger.success("Successfully loaded {}".format(args[0]))
+            self.prompt = "{}haimgard{} ({}{}{}) > ".format(
+                Fore.YELLOW, Style.RESET_ALL, Fore.RED, args[0], Style.RESET_ALL
+            )
+        else:
+            logger.error("Module already selected")
 
     def do_show(self, arg):
         if self.module is None:
@@ -149,7 +152,7 @@ class PhoenixShell(cmd.Cmd):
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
     def do_quit(self, arg):
-        "exit the module shell"
+        "exit the module"
         self.module = None
         self.prompt = "{}haimgard{} > ".format(Fore.YELLOW, Style.RESET_ALL)
     def do_EOF(self, arg):
