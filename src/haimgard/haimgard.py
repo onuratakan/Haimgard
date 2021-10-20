@@ -16,7 +16,6 @@ from loguru import logger
 from rich.console import Console
 from rich.table import Table
 
-
 this_dir, this_filename = os.path.split(__file__)
 
 
@@ -116,7 +115,11 @@ class PhoenixShell(cmd.Cmd):
 
 
     def do_run(self,arg):
-        self.module.run()
+        try:
+            self.module.run()
+        except BaseException:
+            logger.exception("An exception was thrown!")
+        
 
     def do_exploit(self,arg):
         self.module.run()
