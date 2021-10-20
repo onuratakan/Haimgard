@@ -4,7 +4,6 @@
 import cmd
 import importlib
 import importlib.util
-import pathlib
 import readline
 import sys
 import time
@@ -18,72 +17,72 @@ from rich.console import Console
 from rich.table import Table
 
 
-#cowsay
-version_path = pathlib.Path.cwd() / "VERSION"
+this_dir, this_filename = os.path.split(__file__)
+
+
+version_path = os.path.join(this_dir, "VERSION.txt")
 with open(version_path, 'r', encoding='utf-8') as f:
     lines = f.readlines()
     version = lines[0]
-cowsay.cow('Phoenix Framework Version:%s' %(version))
+
+print(cowsay.get_output_string('daemon', f"Haimgard Version: {version}"))
 
 
-#exploit
-dir = pathlib.Path.cwd() / "modules" / "dos"
-count = 0
+#Modules
+dir = os.path.join(this_dir, "modules")
 for root,dirs,files in os.walk(dir):
-    for each in files:
-        if each.endswith(".py"):
-            count += 1
-print("\033[34mNumber of dos:\033[0m",count)
+    for each_dirs in dirs:
+        if not each_dirs == "__pycache__":
+            count = 0
+            for root,dirs,files in os.walk(os.path.join(dir, each_dirs)):
+                for each in files:
+                    if each.endswith(".py"):
+                        count += 1
+            print(f"\033[34mNumber of {each_dirs}:\033[0m",count)
 
 
-#scanner
-dir_scanners = pathlib.Path.cwd() / "modules" / "scanner"
-s_count = 0
-for root,dirs,files in os.walk(dir_scanners):
-    for each in files:
-        if each.endswith(".py"):
-            s_count += 1
-
-print("\033[34mNumber of scanners:\033[0m",s_count)
-
-#tools
-dir_tools = pathlib.Path.cwd() / "modules" / "tools"
-s_count = 0
-for root,dirs,files in os.walk(dir_tools):
-    for each in files:
-        if each.endswith(".py"):
-            s_count += 1
-
-print("\033[34mNumber of tools:\033[0m",s_count)
 class PhoenixShell(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.module = None
-        self.prompt = "{}phoenix2{} > ".format(Fore.YELLOW, Style.RESET_ALL)
+        self.prompt = "{}haimgard{} > ".format(Fore.YELLOW, Style.RESET_ALL)
+
+    def do_list(self, arg):
+        "list dos"
+        if arg == "":
+            logger.error("Please give a category")
+            return          
+        dir = os.path.join(this_dir, "modules", arg)
+        found = False
+        for root,dirs,files in os.walk(dir):
+            for each in files:
+                if each.endswith(".py"):
+                    found = True
+                    print(f"- {os.path.splitext(each)[0]}") 
+
+        if not found:
+            logger.error("No module found")
+            return          
 
     def do_use(self, arg):
         "use exploit/solr/cve-2019-0193"
         args = arg.split()
         try:
-            module_path = pathlib.Path.cwd() / "modules" / (args[0] + ".py")
+            module_path = os.path.join(this_dir, "modules", f"{args[0]}.py")
         except:
             logger.error("No module specified")
             return
-        relative_path = module_path.relative_to(pathlib.Path.cwd() / "modules")
-
-        if not module_path.is_file():
+        if not os.path.isfile(module_path):
             logger.error("the specified module does not exist")
             return
         spec = importlib.util.spec_from_file_location("module.name", str(module_path))
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         self.module = module.Module(logger)
-        tmp_info = relative_path
-        
-        info = str(tmp_info).strip('.py')
-        logger.success("Successfully loaded {}".format(info))
-        self.prompt = "{}phoenix2{} ({}{}{}) > ".format(
-            Fore.YELLOW, Style.RESET_ALL, Fore.RED, info, Style.RESET_ALL
+
+        logger.success("Successfully loaded {}".format(args[0]))
+        self.prompt = "{}haimgard{} ({}{}{}) > ".format(
+            Fore.YELLOW, Style.RESET_ALL, Fore.RED, args[0], Style.RESET_ALL
         )
 
     def do_show(self, arg):
@@ -136,18 +135,18 @@ class PhoenixShell(cmd.Cmd):
 
     def do_version(self,arg):
         "version info"
-        version_path = pathlib.Path.cwd() / "VERSION"
+        version_path = os.path.join(this_dir, "VERSION.txt")
         with open(version_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
             version = lines[0]
             print(version)
 
     def do_exit(self, arg):
-        "exit the Phoenix shell"
+        "exit the Haimgard shell"
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
     def do_quit(self, arg):
-        "exit the Phoenix shell"
+        "exit the Haimgard shell"
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
     def do_EOF(self, arg):
@@ -155,7 +154,7 @@ class PhoenixShell(cmd.Cmd):
         sys.exit(1)
 
     def do_search(self,arg):
-        search_path = pathlib.Path.cwd() / "modules"
+        search_path = os.path.join(this_dir, "modules")
         for root,dirs,files in os.walk(search_path):
             for name in files:
                 name_list = []
