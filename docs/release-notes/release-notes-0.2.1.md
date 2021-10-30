@@ -1,11 +1,7 @@
-0.2.0 Release Notes
+0.2.1 Release Notes
 ====================
 
-Added docs/release-notest
-
-Added try except to module run
-
-Added wordpress user dedection module
+Version and requirements manualy aded to setup
 
 Credits
 =======
