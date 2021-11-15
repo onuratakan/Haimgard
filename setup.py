@@ -3,7 +3,7 @@ import pathlib
 
     
 setup(name='haimgard',
-version="0.4.0",
+version="0.5.0",
 description="""Haimgard is an environment for writing, testing and using exploit code.""",
 long_description="""
 # Haimgard-Framework
