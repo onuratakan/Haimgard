@@ -155,14 +155,20 @@ class PhoenixShell(cmd.Cmd):
         "set target arg"
         key = arg.split()[0]
         value = arg.split()[1]
+        finded_option = False
         try:
             self.module.options[key]["value"] = value
+            finded_option = True
         except:
             pass
         try:
             self.options[key]["value"] = value
+            finded_option = True
         except:
             pass
+
+        if not finded_option:
+            logger.error("No option found")
 
 
     def do_run(self,arg):
