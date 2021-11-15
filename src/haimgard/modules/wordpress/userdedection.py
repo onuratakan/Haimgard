@@ -8,6 +8,9 @@ import json
 class Module:
     def __init__(self, logger):
         self.logger = logger
+        self.name = "wordpress/userdedection"
+        self.description = "Get wordpress users."
+        self.author = "Onur Atakan ULUSOY"             
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": True, "required": False},
@@ -18,9 +21,10 @@ class Module:
     def info(self):
         console = Console()
         table = Table()
-        table.add_column("Author")
+        table.add_column("Name")
         table.add_column("Description")
-        table.add_row("Onur Atakan ULUSOY","Get wordpress users.")
+        table.add_column("Author")
+        table.add_row(self.name, self.description, self.author)
         console.print(table)
 
 
@@ -30,7 +34,7 @@ class Module:
                 self.options[key]["value"] is None
                 and self.options[key]["required"] is True
             ):
-                self.logger.error("Required key {} is not set".format(key))
+                self.logger.error(f"Required key {str(key)} is not set for userdedection")
                 return
 
 
@@ -72,9 +76,8 @@ class Module:
             table.add_column("LINK")
             table.add_column("SLUG")
             [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"])) for user in user_list]
+            print(f"\033[32m[+]\033[0m Wordpress user is detected on {url2}")
             console.print(table)
         else:
-            print(f"\033[32m[-]\033[0m Wordpress user is not detected on {target}:{port}")
+            print(f"[-] Wordpress user is not detected on {url2}")
 
-
-        print(f"\033[32m[-]\033[0m Finished dedection on {target}:{port}")

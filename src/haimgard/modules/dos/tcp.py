@@ -8,6 +8,9 @@ import random
 class Module:
     def __init__(self, logger):
         self.logger = logger
+        self.name = "dos/tcp"
+        self.description = "TCP based dos attack."
+        self.author = "Onur Atakan ULUSOY"        
         self.options = {
             "target": {"value": None, "required": True},
             "port": {"value": 80, "required": False},
@@ -17,9 +20,10 @@ class Module:
     def info(self):
         console = Console()
         table = Table()
+        table.add_column("Name")
+        table.add_column("Description")
         table.add_column("Author")
-        table.add_column("Scanner description")
-        table.add_row("Onur Atakan ULUSOY","TCP based dos attack.")
+        table.add_row(self.name, self.description, self.author)
         console.print(table)
 
 
@@ -29,7 +33,7 @@ class Module:
                 self.options[key]["value"] is None
                 and self.options[key]["required"] is True
             ):
-                self.logger.error("Required key {} is not set".format(key))
+                self.logger.error(f"Required key {str(key)} is not set")
                 return
 
 
@@ -50,6 +54,6 @@ class Module:
             # send the packets
             s.send(packet.encode())
         s.close()
-        print("\033[32m[tcp]\033[0m" + f"[*] Finished tcp_dos DoS attack on {target}-{port}")
+        print(f"\033[32m[+]\033[0m Finished tcp_dos DoS attack on {target}-{port}")
 
 

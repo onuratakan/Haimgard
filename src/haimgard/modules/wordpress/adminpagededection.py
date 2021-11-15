@@ -6,6 +6,9 @@ import random
 class Module:
     def __init__(self, logger):
         self.logger = logger
+        self.name = "wordpress/adminpagededection"
+        self.description = "Wordpress admin page detection."
+        self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": True, "required": False},
@@ -15,9 +18,10 @@ class Module:
     def info(self):
         console = Console()
         table = Table()
-        table.add_column("Author")
+        table.add_column("Name")
         table.add_column("Description")
-        table.add_row("Onur Atakan ULUSOY","Wordpress admin page detection.")
+        table.add_column("Author")
+        table.add_row(self.name, self.description, self.author)
         console.print(table)
 
 
@@ -27,7 +31,7 @@ class Module:
                 self.options[key]["value"] is None
                 and self.options[key]["required"] is True
             ):
-                self.logger.error("Required key {} is not set".format(key))
+                self.logger.error(f"Required key {str(key)} is not set")
                 return
 
 
@@ -56,5 +60,4 @@ class Module:
 
         url2 = f"{url}/wp-admin"
         r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
-        print(f"\033[32m[-]\033[0m Wordpress admin page is detected on {url2}") if r.status_code == 200 else print(f"[*] Wordpress admin page is not detected on {self.get_target()}")
-        print(f"\033[32m[*]\033[0m Finished dedection on {target}:{port}")
+        print(f"\033[32m[+]\033[0m Wordpress admin page is detected on {url2}") if r.status_code == 200 else print(f"[-] Wordpress admin page is not detected on {url2}")
