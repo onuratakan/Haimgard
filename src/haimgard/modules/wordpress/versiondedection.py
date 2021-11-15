@@ -77,4 +77,4 @@ class Module:
                 version = match[0]
 
 
-        print(f"\033[32m[+]\033[0m Wordpress version detected {version} on {url}") if version else print(f"[*] Wordpress version is not detected on {url}")
+        print(f"\033[32m[+]\033[0m Wordpress version detected {version} on {url}") if version else print(f"[-] Wordpress version is not detected on {url}")
