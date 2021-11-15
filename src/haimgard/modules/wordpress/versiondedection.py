@@ -9,7 +9,7 @@ class Module:
     def __init__(self, logger):
         self.logger = logger
         self.name = "wordpress/versiondedection"
-        self.description = "Wordpress version detection."
+        self.description = "WordPress version detection."
         self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
@@ -77,4 +77,4 @@ class Module:
                 version = match[0]
 
 
-        print(f"\033[32m[+]\033[0m Wordpress version detected {version} on {url}") if version else print(f"[-] Wordpress version is not detected on {url}")
+        print(f"\033[32m[+]\033[0m WordPress version detected {version} on {url}") if version else print(f"[-] WordPress version is not detected on {url}")

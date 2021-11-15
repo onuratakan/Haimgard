@@ -7,7 +7,7 @@ class Module:
     def __init__(self, logger):
         self.logger = logger
         self.name = "wordpress/adminpagededection"
-        self.description = "Wordpress admin page detection."
+        self.description = "WordPress admin page detection."
         self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
@@ -60,4 +60,4 @@ class Module:
 
         url2 = f"{url}/wp-admin"
         r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
-        print(f"\033[32m[+]\033[0m Wordpress admin page is detected on {url2}") if r.status_code == 200 else print(f"[-] Wordpress admin page is not detected on {url2}")
+        print(f"\033[32m[+]\033[0m WordPress admin page is detected on {url2}") if r.status_code == 200 else print(f"[-] WordPress admin page is not detected on {url2}")

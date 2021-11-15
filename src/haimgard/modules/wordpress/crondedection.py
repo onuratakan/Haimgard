@@ -7,7 +7,7 @@ class Module:
     def __init__(self, logger):
         self.logger = logger
         self.name = "wordpress/crondedection"
-        self.description = "Wordpress cron detection."
+        self.description = "WordPress cron detection."
         self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
@@ -60,4 +60,4 @@ class Module:
 
         url2 = f"{url}/wp-cron.php"
         r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
-        print(f"\033[32m[+]\033[0m Wordpress cron is detected on {url2}") if r.status_code == 200 else print(f"[-] Wordpress cron is not detected on {url2}")
+        print(f"\033[32m[+]\033[0m WordPress cron is detected on {url2}") if r.status_code == 200 else print(f"[-] WordPress cron is not detected on {url2}")

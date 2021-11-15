@@ -76,8 +76,8 @@ class Module:
             table.add_column("LINK")
             table.add_column("SLUG")
             [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"])) for user in user_list]
-            print(f"\033[32m[+]\033[0m Wordpress user is detected on {url2}")
+            print(f"\033[32m[+]\033[0m WordPress user is detected on {url2}")
             console.print(table)
         else:
-            print(f"[-] Wordpress user is not detected on {url2}")
+            print(f"[-] WordPress user is not detected on {url2}")
 
