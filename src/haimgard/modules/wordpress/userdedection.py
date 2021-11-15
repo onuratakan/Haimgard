@@ -15,7 +15,7 @@ class Module:
             "target": {"value": None, "required": True},
             "ssl": {"value": True, "required": False},
             "port": {"value": 443, "required": False},
-            "path": {"value": "/", "required": False}
+            "path": {"value": "", "required": False}
         }
 
     def info(self):

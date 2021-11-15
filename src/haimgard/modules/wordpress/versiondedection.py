@@ -15,6 +15,7 @@ class Module:
             "target": {"value": None, "required": True},
             "ssl": {"value": True, "required": False},
             "port": {"value": 443, "required": False},
+            "path": {"value": "", "required": False}
         }
 
     def info(self):
@@ -39,8 +40,9 @@ class Module:
         target = self.options["target"]["value"]
         ssl = self.options["ssl"]["value"]
         port = int(self.options["port"]["value"])
+        path = self.options["path"]["value"]
 
-        url = f"https://{target}:{port}" if ssl else f"http://{target}:{port}"
+        url = f"https://{target}:{port}{path}" if ssl else f"http://{target}:{port}{path}"
 
         user_agents = [
             "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50",
