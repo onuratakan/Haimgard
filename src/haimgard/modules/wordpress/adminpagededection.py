@@ -31,7 +31,7 @@ class Module:
                 self.options[key]["value"] is None
                 and self.options[key]["required"] is True
             ):
-                self.logger.error(f"Required key {str(key)} is not set")
+                self.logger.error(f"Required key {str(key)} is not set for {self.name}")
                 return
 
 
