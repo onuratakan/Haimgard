@@ -54,7 +54,7 @@ class PhoenixShell(cmd.Cmd):
         }        
 
     def do_list(self, arg):
-        "list dos"
+        "list wordpress"
         if arg == "":
             logger.error("Please give a category")
             return          
@@ -71,7 +71,7 @@ class PhoenixShell(cmd.Cmd):
             return          
 
     def do_use(self, arg):
-        "use exploit/solr/cve-2019-0193"
+        "use wordpress/adminpagededection"
         args = arg.split()
         if self.module is None:
             try:
@@ -97,34 +97,65 @@ class PhoenixShell(cmd.Cmd):
         else:
             logger.error("Module already selected")
 
+
+    def do_runall(self, arg):
+        "runall worpress"
+        if arg == "":
+            logger.error("Please give a category")
+            return          
+        dir = os.path.join(this_dir, "modules", arg)
+        found = False
+        for root,dirs,files in os.walk(dir):
+            for each in files:
+                if each.endswith(".py"):
+                    found = True
+                    module_path = os.path.join(this_dir, "modules", f"{arg}/{os.path.splitext(each)[0]}.py")
+                    spec = importlib.util.spec_from_file_location("module.name", str(module_path))
+                    module = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(module) 
+                    the_module = module.Module(logger)
+                    for option in self.options:
+                        if option in the_module.options:
+                            the_module.options[option]["value"] = self.options[option]["value"]                    
+                    the_module.run()                   
+
+        if not found:
+            logger.error("No module found")
+            return          
+
+
     def do_show(self, arg):
-        if self.module is None:
-            logger.warning("Please select a module first")
-            return
+        "show"
         table = Table()
         table.add_column("Key")
         table.add_column("Value")
         table.add_column("Required")
-
-        for key in self.module.options:
-            table.add_row(
-                key,
-                str(self.module.options[key]["value"]),
-                str(self.module.options[key]["required"]),
-            )
-        Console().print(table)
+        
+        if self.module is None:
+            for key in self.options:
+                table.add_row(
+                    key,
+                    str(self.options[key]["value"]),
+                    str(self.options[key]["required"]),
+                )
+            Console().print(table)
+        else:
+            for key in self.module.options:
+                table.add_row(
+                    key,
+                    str(self.module.options[key]["value"]),
+                    str(self.module.options[key]["required"]),
+                )
+            Console().print(table)
 
     def do_set(self, arg):
-        "set an option for the selected module"
-        if self.module is None:
-            logger.warning("Please select a module first")
-            return
+        "set target arg"
         key = arg.split()[0]
         value = arg.split()[1]
-        if key not in self.module.options:
-            logger.error("Option does not exist")
-            return
-        self.module.options[key]["value"] = value
+        try:
+            self.module.options[key]["value"] = value
+        except:
+            pass
         try:
             self.options[key]["value"] = value
         except:
@@ -132,14 +163,12 @@ class PhoenixShell(cmd.Cmd):
 
 
     def do_run(self,arg):
+        "run"
         try:
             self.module.run()
         except BaseException:
             logger.exception("An exception was thrown!")
         
-
-    def do_exploit(self,arg):
-        self.module.run()
 
     def do_info(self, arg):
         if self.module is None:
@@ -163,7 +192,6 @@ class PhoenixShell(cmd.Cmd):
 
     def do_exit(self, arg):
         "exit the Haimgard shell"
-        os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
     def do_quit(self, arg):
         "exit the module"
