@@ -18,13 +18,7 @@ from rich.table import Table
 
 this_dir, this_filename = os.path.split(__file__)
 
-
-version_path = os.path.join(this_dir, "VERSION.txt")
-with open(version_path, 'r', encoding='utf-8') as f:
-    lines = f.readlines()
-    version = lines[0]
-
-print(cowsay.get_output_string('daemon', f"Haimgard Version: {version}"))
+print(cowsay.get_output_string('daemon', "Haimgard"))
 
 
 #Modules
@@ -190,14 +184,6 @@ class PhoenixShell(cmd.Cmd):
             os.system("clear")
         except:
             os.system("cls")
-
-    def do_version(self,arg):
-        "version info"
-        version_path = os.path.join(this_dir, "VERSION.txt")
-        with open(version_path, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-            version = lines[0]
-            print(version)
 
     def do_exit(self, arg):
         "exit the Haimgard shell"

@@ -20,7 +20,7 @@ license='MIT',
 packages=["haimgard"],
 package_dir={'':'src'},
 package_data={
-    "haimgard": ["modules/*/*.py", "*.txt"],
+    "haimgard": ["modules/*/*.py"],
 },
 install_requires="""
 commonmark==0.9.1
