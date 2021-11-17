@@ -1,5 +1,4 @@
 tasks:
-  - name: Installing
-    command: pip3 install .
-  - name: Running
-    command: haimgard   
+  - name: Installing and running
+    init: pip3 install .
+    command: haimgard
