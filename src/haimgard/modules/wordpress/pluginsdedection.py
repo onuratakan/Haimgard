@@ -88,7 +88,6 @@ class Module:
         plugin_found = False
         for line in lines[:pluginnumber]:
             url2 = url + f"/wp-content/plugins/{line}"
-            print(url2)
             if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}).status_code == 200:
                 plugin_found = True
                 table.add_row(str(line), str(url2))
