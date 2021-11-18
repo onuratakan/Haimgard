@@ -51,6 +51,7 @@ class PhoenixShell(cmd.Cmd):
             "requestdelay": {"value": 0.1, "required": False},
             "pluginnumber": {"value": 100, "required": False},
             "themenumber": {"value": 100, "required": False},
+            "aggressive": {"value": False, "required": False},
             "update": {"value": False, "required": False}
         }        
 
