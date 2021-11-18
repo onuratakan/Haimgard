@@ -38,7 +38,7 @@ class Module:
                 return
 
         target = self.options["target"]["value"]
-        ssl = self.options["ssl"]["value"]
+        ssl = True if self.options["ssl"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
 

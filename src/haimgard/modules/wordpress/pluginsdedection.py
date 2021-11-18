@@ -46,7 +46,7 @@ class Module:
 
 
         target = self.options["target"]["value"]
-        ssl = True if self.options["ssl"]["value"] == "True" else False
+        ssl = True if  == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
         requestdelay = float(self.options["requestdelay"]["value"])
