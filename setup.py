@@ -20,7 +20,7 @@ license='MIT',
 packages=["haimgard"],
 package_dir={'':'src'},
 package_data={
-    "haimgard": ["modules/*/*.py"],
+    "haimgard": ["modules/*/*.py", "modules/*/*.txt"],
 },
 install_requires="""
 commonmark==0.9.1
@@ -28,6 +28,9 @@ cowsay==4.0
 loguru==0.5.3
 rich==10.12.0
 scapy==2.4.5
+beautifulsoup4==4.10.0
+bs4==0.0.1
+soupsieve==2.3.1
 """,
 entry_points = {
     'console_scripts': ['haimgard=haimgard.haimgard:main'],
