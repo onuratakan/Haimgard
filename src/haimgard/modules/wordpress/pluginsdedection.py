@@ -68,11 +68,12 @@ class Module:
         ]
 
         this_dir, this_filename = os.path.split(__file__)
+        pluginstxt = os.path.join(this_dir, "plugins.txt")
 
         if update:
             link = hyperlink.urlopen('http://plugins.svn.wordpress.org/')
             wordPressSoup = BeautifulSoup(link,'lxml')
-            with open(os.path.join(this_dir, "plugins.txt"), 'wt', encoding='utf8') as file:
+            with open(pluginstxt, 'wt', encoding='utf8') as file:
                     file.write(wordPressSoup.text)
 
         console = Console()
@@ -80,8 +81,8 @@ class Module:
         table.add_column("NAME")
         table.add_column("PATH")
 
-        version_path = os.path.join(this_dir, "plugins.txt")
-        with open(version_path, 'r', encoding='utf-8') as f:
+
+        with open(pluginstxt, 'r', encoding='utf-8') as f:
             lines = f.readlines()
 
 
