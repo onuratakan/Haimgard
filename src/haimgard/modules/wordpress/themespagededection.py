@@ -60,6 +60,6 @@ class Module:
 
 
 
-        url2 = f"{url}/wp-content/themes"
+        url2 = f"{url}/wp-content/themes/"
         r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
         print(f"\033[32m[+]\033[0m WordPress themes page is detected on {url2}") if r.status_code == 200 else print(f"[-] WordPress themes page is not detected on {url2}")
