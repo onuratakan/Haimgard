@@ -48,7 +48,10 @@ class PhoenixShell(cmd.Cmd):
             "timeout": {"value": 1, "required": False},
             "start": {"value": None, "required": False},
             "end": {"value": None, "required": False},
-            "requestdelay": {"value": 0.1, "required": False}
+            "requestdelay": {"value": 0.1, "required": False},
+            "pluginnumber": {"value": 100, "required": False},
+            "themenumber": {"value": 100, "required": False},
+            "update": {"value": False, "required": False}
         }        
 
     def do_list(self, arg):
