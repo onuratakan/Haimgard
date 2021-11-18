@@ -6,8 +6,8 @@ import random
 class Module:
     def __init__(self, logger):
         self.logger = logger
-        self.name = "wordpress/themesdedection"
-        self.description = "WordPress themes detection."
+        self.name = "wordpress/themespagededection"
+        self.description = "WordPress themes page detection."
         self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
@@ -62,4 +62,4 @@ class Module:
 
         url2 = f"{url}/wp-content/themes"
         r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
-        print(f"\033[32m[+]\033[0m WordPress themes is detected on {url2}") if r.status_code == 200 else print(f"[-] WordPress themes is not detected on {url2}")
+        print(f"\033[32m[+]\033[0m WordPress themes page is detected on {url2}") if r.status_code == 200 else print(f"[-] WordPress themes page is not detected on {url2}")
