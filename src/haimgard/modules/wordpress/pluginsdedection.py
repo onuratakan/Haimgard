@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import urllib.request as hyperlink
 import os
 import time
+import re
 
 class Module:
     def __init__(self, logger):
@@ -20,6 +21,7 @@ class Module:
             "path": {"value": "", "required": False},
             "requestdelay": {"value": 0.1, "required": False},
             "pluginnumber": {"value": 100, "required": False},
+            "aggressive": {"value": False, "required": False},
             "update": {"value": False, "required": False}
         }
 
@@ -44,12 +46,13 @@ class Module:
 
 
         target = self.options["target"]["value"]
-        ssl = self.options["ssl"]["value"]
+        ssl = True if self.options["ssl"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
         requestdelay = float(self.options["requestdelay"]["value"])
         pluginnumber = int(self.options["pluginnumber"]["value"])
-        update = self.options["update"]["value"] == "True"
+        aggressive = True if self.options["aggressive"]["value"] == "True" else False
+        update = True if self.options["update"]["value"] ==  "True" else False
         url = f"https://{target}:{port}{path}" if ssl else f"http://{target}:{port}{path}"
 
         user_agents = [
@@ -80,23 +83,43 @@ class Module:
         table = Table()
         table.add_column("NAME")
         table.add_column("PATH")
+        table.add_column("VERSION")
 
 
-        with open(pluginstxt, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+
 
 
         plugin_found = False
-        for line in lines[:pluginnumber]:
-            url2 = url + f"/wp-content/plugins/{line}"
-            if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}).status_code == 200:
+
+
+        regex = re.compile('wp-content/plugins/(.*?)/.*?[css|js].*?ver=([0-9\.]*)')
+        match = regex.findall(requests.get(url, headers={"User-Agent":random.choice(user_agents)}).text)
+        plugins = []
+        for m in match:
+            plugin_name = m[0]
+            plugin_name = plugin_name.replace('-master','')
+            plugin_name = plugin_name.replace('.min','')
+            plugin_version = m[1]
+            if plugin_name not in plugins:
                 plugin_found = True
-                table.add_row(str(line), str(url2))
-            time.sleep(requestdelay)
+                plugins.append(plugin_name)
+                plugin_url = url + f"/wp-content/plugins/{plugin_name}"
+                plugin_url_results = plugin_url if requests.get(plugin_url, headers={"User-Agent":random.choice(user_agents)}).status_code == 200 else "X"
+                table.add_row(str(plugin_name), plugin_url_results, plugin_version)
+
+        if aggressive:
+            with open(pluginstxt, 'r', encoding='utf-8') as f:
+                lines = f.readlines()        
+            for line in lines[:pluginnumber]:
+                url2 = url + f"/wp-content/plugins/{line}"
+                if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}).status_code == 200:
+                    plugin_found = True
+                    table.add_row(str(line), str(url2), str("?"))
+                time.sleep(requestdelay)
         
         
         if plugin_found:
-            console.print(table)
             print(f"\033[32m[+]\033[0m WordPress plugins is detected on {url}")
+            console.print(table)
         else:
             print(f"[-] WordPress plugins is not detected on {url}")

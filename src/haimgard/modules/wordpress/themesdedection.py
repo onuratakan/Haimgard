@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import urllib.request as hyperlink
 import os
 import time
+import re
 
 class Module:
     def __init__(self, logger):
@@ -20,6 +21,7 @@ class Module:
             "path": {"value": "", "required": False},
             "requestdelay": {"value": 0.1, "required": False},
             "themenumber": {"value": 100, "required": False},
+            "aggressive": {"value": False, "required": False},
             "update": {"value": False, "required": False}
         }
 
@@ -44,12 +46,13 @@ class Module:
 
 
         target = self.options["target"]["value"]
-        ssl = self.options["ssl"]["value"]
+        ssl = True if self.options["ssl"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
         requestdelay = float(self.options["requestdelay"]["value"])
         themenumber = int(self.options["themenumber"]["value"])
-        update = self.options["update"]["value"] == "True"
+        aggressive = True if self.options["aggressive"]["value"] == "True" else False
+        update = True if self.options["update"]["value"] ==  "True" else False
         url = f"https://{target}:{port}{path}" if ssl else f"http://{target}:{port}{path}"
 
         user_agents = [
@@ -80,22 +83,43 @@ class Module:
         table = Table()
         table.add_column("NAME")
         table.add_column("PATH")
+        table.add_column("VERSION")
 
-        with open(themestxt, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+
+
 
 
         theme_found = False
-        for line in lines[:themenumber]:
-            url2 = url + f"/wp-content/themes/{line}"
-            if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}).status_code == 200:
+
+
+        regex = re.compile('wp-content/themes/(.*?)/.*?[css|js].*?ver=([0-9\.]*)')
+        match = regex.findall(requests.get(url, headers={"User-Agent":random.choice(user_agents)}).text)
+        themes = []
+        for m in match:
+            theme_name = m[0]
+            theme_name = theme_name.replace('-master','')
+            theme_name = theme_name.replace('.min','')
+            theme_version = m[1]
+            if theme_name not in themes:
                 theme_found = True
-                table.add_row(str(line), str(url2))
-            time.sleep(requestdelay)
+                themes.append(theme_name)
+                theme_url = url + f"/wp-content/themes/{theme_name}"
+                theme_url_results = theme_url if requests.get(theme_url, headers={"User-Agent":random.choice(user_agents)}).status_code == 200 else "X"
+                table.add_row(str(theme_name), theme_url_results, theme_version)
+
+        if aggressive:
+            with open(themestxt, 'r', encoding='utf-8') as f:
+                lines = f.readlines()        
+            for line in lines[:themenumber]:
+                url2 = url + f"/wp-content/themes/{line}"
+                if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}).status_code == 200:
+                    theme_found = True
+                    table.add_row(str(line), str(url2), str("?"))
+                time.sleep(requestdelay)
         
         
         if theme_found:
-            console.print(table)
             print(f"\033[32m[+]\033[0m WordPress themes is detected on {url}")
+            console.print(table)
         else:
             print(f"[-] WordPress themes is not detected on {url}")
