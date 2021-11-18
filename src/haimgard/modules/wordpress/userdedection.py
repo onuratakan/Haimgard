@@ -3,6 +3,7 @@ from rich.console import Console
 from rich.table import Table
 import random
 import json
+import re
 
 
 class Module:
@@ -26,7 +27,17 @@ class Module:
         table.add_column("Author")
         table.add_row(self.name, self.description, self.author)
         console.print(table)
-
+        
+    def xmlrpc_check_admin(self, url, username):
+        post = "<methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value><string>" + username + "</string></value></param><param><value><string>" + "123" + "</string></value></param></params></methodCall>"
+        req = requests.post(f"{url}/xmlrpc.php", data=post)
+        regex = re.compile("isAdmin.*boolean.(\d)")
+        match = regex.findall(req.text)
+        if len(match) != 0:
+            if int(match[0]):
+                return True
+            else:
+                return False
 
     def run(self):
         for key in self.options:
@@ -75,7 +86,8 @@ class Module:
             table.add_column("DESCRIPTION")
             table.add_column("LINK")
             table.add_column("SLUG")
-            [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"])) for user in user_list]
+            table.add_column("ADMIN")
+            [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"]), str("+") if self.xmlrpc_check_admin(url, user["name"]) else str("-")) for user in user_list]
             print(f"\033[32m[+]\033[0m WordPress user is detected on {url2}")
             console.print(table)
         else:
