@@ -76,21 +76,23 @@ class Module:
 
         url2 = f"{url}/wp-json/wp/v2/users"
         r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify)
-        if "id" in r.text:
+        if r.status_code == 200:
+            if "id" in r.text:
 
-            user_list = json.loads(r.text)
-            console = Console()
-            table = Table()
-            table.add_column("ID")
-            table.add_column("NAME")
-            table.add_column("URL")
-            table.add_column("DESCRIPTION")
-            table.add_column("LINK")
-            table.add_column("SLUG")
-            table.add_column("ADMIN")
-            [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"]), str("+") if self.xmlrpc_check_admin(url, user["name"], sslverify) else str("-")) for user in user_list]
-            print(f"\033[32m[+]\033[0m WordPress user is detected on {url2}")
-            console.print(table)
+                user_list = json.loads(r.text)
+                console = Console()
+                table = Table()
+                table.add_column("ID")
+                table.add_column("NAME")
+                table.add_column("URL")
+                table.add_column("DESCRIPTION")
+                table.add_column("LINK")
+                table.add_column("SLUG")
+                table.add_column("ADMIN")
+                [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"]), str("+") if self.xmlrpc_check_admin(url, user["name"], sslverify) else str("-")) for user in user_list]
+                print(f"\033[32m[+]\033[0m WordPress user is detected on {url2}")
+                console.print(table)
+            else:
+                print(f"[-] WordPress user is not detected on {url2}")
         else:
             print(f"[-] WordPress user is not detected on {url2}")
-
