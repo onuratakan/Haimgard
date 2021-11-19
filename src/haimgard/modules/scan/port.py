@@ -39,8 +39,8 @@ class Module:
 
         target = self.options["target"]["value"]
         timeout = float(self.options["timeout"]["value"])
-        start = self.options["start"]["value"]
-        end = self.options["end"]["value"]
+        start = int(self.options["start"]["value"])
+        end = int(self.options["end"]["value"])
 
         port_range = range(int(start), (int(end) + 1))
 
