@@ -11,7 +11,7 @@ class Module:
         self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
-            "ssl": {"value": True, "required": False},
+            "ssl": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False}
         }
@@ -61,5 +61,5 @@ class Module:
 
 
         url2 = f"{url}/wp-admin"
-        r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
+        r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)}, verify = False)
         print(f"\033[32m[+]\033[0m WordPress admin page is detected on {url2}") if r.status_code == 200 else print(f"[-] WordPress admin page is not detected on {url2}")
