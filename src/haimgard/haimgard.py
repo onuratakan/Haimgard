@@ -58,6 +58,25 @@ class PhoenixShell(cmd.Cmd):
             "update": {"value": "False", "required": False}
         }        
 
+    def do_mode(self, arg):
+        "mode passive/normal"
+        if arg == "":
+            logger.error("Please give a value")
+            return          
+
+        if arg == "passive":
+            self.options["amount"]["value"] = 0
+            self.options["commonport"]["value"] = 0
+            self.options["start"]["value"] = 0
+            self.options["end"]["value"] = 0
+        elif arg == "normal":
+            self.options["amount"]["value"] = 100
+            self.options["commonport"]["value"] = 1000
+            self.options["start"]["value"] = 1
+            self.options["end"]["value"] = 100
+        else:
+            logger.error("No mode found") 
+
     def do_list(self, arg):
         "list wordpress"
         if arg == "":
