@@ -9,8 +9,8 @@ import re
 class Module:
     def __init__(self, logger):
         self.logger = logger
-        self.name = "wordpress/wafdedection"
-        self.description = "WordPress waf dedection."
+        self.name = "scan/wafdedection"
+        self.description = "WAF dedection."
         self.author = "Onur Atakan ULUSOY"             
         self.options = {
             "target": {"value": None, "required": True},
@@ -70,29 +70,21 @@ class Module:
 
 
         r = requests.get(url, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify)
-        waf_list = [
-            "wordfence",
-            "bulletproof-security",
-            "sucuri-scanner",
-            "better-wp-security",
-            "wp-security-scan",
-            "all-in-one-wp-security-and-firewall",
-            "6scan-protection",
+
+        not_plugin_wafs = [
+            "cloudflare",
+            "__cfduid"
         ]
 
         waf_found = False
-        for waf in waf_list:
-            w_path = f"/wp-content/plugins/{waf}/"
-            if re.search(w_path,r.text):
+        for waf in not_plugin_wafs:
+            if re.search(waf,str(r.headers),re.I):
                 waf_found = True
-                pr_path = url + w_path
-                pr = requests.get(pr_path, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify)
-                pr_result = pr_path if pr.status_code == 200 else "X"
-                table.add_row(waf, pr_result)
+                table.add_row(waf, "X")
 
 
         if waf_found:
-            print(f"\033[32m[+]\033[0m WordPress waf is detected on {url}")
+            print(f"\033[32m[+]\033[0m WAF is detected on {url}")
             console.print(table)
         else:
-            print(f"[-] WordPress waf is not detected on {url}")
+            print(f"[-] WAF is not detected on {url}")
