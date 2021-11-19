@@ -42,7 +42,7 @@ class PhoenixShell(cmd.Cmd):
 
         self.options = {
             "target": {"value": None, "required": True},
-            "ssl": {"value": True, "required": False},
+            "ssl": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False},
             "timeout": {"value": 1, "required": False},
@@ -51,8 +51,8 @@ class PhoenixShell(cmd.Cmd):
             "requestdelay": {"value": 0.1, "required": False},
             "pluginnumber": {"value": 100, "required": False},
             "themenumber": {"value": 100, "required": False},
-            "aggressive": {"value": False, "required": False},
-            "update": {"value": False, "required": False}
+            "aggressive": {"value": "False", "required": False},
+            "update": {"value": "False", "required": False}
         }        
 
     def do_list(self, arg):
