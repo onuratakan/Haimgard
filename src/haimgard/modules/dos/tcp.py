@@ -14,7 +14,7 @@ class Module:
         self.options = {
             "target": {"value": None, "required": True},
             "port": {"value": 80, "required": False},
-            "amount": {"value": None, "required": True},
+            "amount": {"value": 1, "required": True},
         }
 
     def info(self):
