@@ -15,6 +15,7 @@ class Module:
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": "True", "required": False},
+            "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False}
         }
@@ -28,9 +29,9 @@ class Module:
         table.add_row(self.name, self.description, self.author)
         console.print(table)
         
-    def xmlrpc_check_admin(self, url, username):
+    def xmlrpc_check_admin(self, url, username, verify):
         post = "<methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value><string>" + username + "</string></value></param><param><value><string>" + "123" + "</string></value></param></params></methodCall>"
-        req = requests.post(f"{url}/xmlrpc.php", data=post)
+        req = requests.post(f"{url}/xmlrpc.php", data=post, verify = verify)
         regex = re.compile("isAdmin.*boolean.(\d)")
         match = regex.findall(req.text)
         if len(match) != 0:
@@ -51,6 +52,7 @@ class Module:
 
         target = self.options["target"]["value"]
         ssl = True if self.options["ssl"]["value"] == "True" else False
+        sslverify = True if self.options["sslverify"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
 
@@ -72,9 +74,8 @@ class Module:
         ]
 
 
-        user_agent = random.choice(user_agents)
         url2 = f"{url}/wp-json/wp/v2/users"
-        r = requests.get(url2, headers={"User-Agent":user_agent})
+        r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify)
         if "id" in r.text:
 
             user_list = json.loads(r.text)
@@ -87,7 +88,7 @@ class Module:
             table.add_column("LINK")
             table.add_column("SLUG")
             table.add_column("ADMIN")
-            [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"]), str("+") if self.xmlrpc_check_admin(url, user["name"]) else str("-")) for user in user_list]
+            [table.add_row(str(user["id"]), str(user["name"]), str(user["url"]), str(user["description"][:40] + "..."), str(user["link"]), str(user["slug"]), str("+") if self.xmlrpc_check_admin(url, user["name"], sslverify) else str("-")) for user in user_list]
             print(f"\033[32m[+]\033[0m WordPress user is detected on {url2}")
             console.print(table)
         else:

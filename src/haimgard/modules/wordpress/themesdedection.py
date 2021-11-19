@@ -17,6 +17,7 @@ class Module:
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": "True", "required": False},
+            "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False},
             "requestdelay": {"value": 0.1, "required": False},
@@ -47,6 +48,7 @@ class Module:
 
         target = self.options["target"]["value"]
         ssl = True if self.options["ssl"]["value"] == "True" else False
+        sslverify = True if self.options["sslverify"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
         requestdelay = float(self.options["requestdelay"]["value"])
@@ -93,7 +95,7 @@ class Module:
 
 
         regex = re.compile('wp-content/themes/(.*?)/.*?[css|js].*?ver=([0-9\.]*)')
-        match = regex.findall(requests.get(url, headers={"User-Agent":random.choice(user_agents)}).text)
+        match = regex.findall(requests.get(url, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify).text)
         themes = []
         for m in match:
             theme_name = m[0]
@@ -104,7 +106,7 @@ class Module:
                 theme_found = True
                 themes.append(theme_name)
                 theme_url = url + f"/wp-content/themes/{theme_name}"
-                theme_url_results = theme_url if requests.get(theme_url, headers={"User-Agent":random.choice(user_agents)}).status_code == 200 else "X"
+                theme_url_results = theme_url if requests.get(theme_url, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify).status_code == 200 else "X"
                 table.add_row(str(theme_name), theme_url_results, theme_version)
 
         if aggressive:
@@ -112,7 +114,7 @@ class Module:
                 lines = f.readlines()        
             for line in lines[:themenumber]:
                 url2 = url + f"/wp-content/themes/{line}"
-                if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}).status_code == 200:
+                if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify).status_code == 200:
                     theme_found = True
                     table.add_row(str(line), str(url2), str("?"))
                 time.sleep(requestdelay)

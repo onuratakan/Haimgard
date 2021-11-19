@@ -17,6 +17,7 @@ class Module:
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": "True", "required": False},
+            "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False},
             "requestdelay": {"value": 0.1, "required": False},
@@ -47,6 +48,7 @@ class Module:
 
         target = self.options["target"]["value"]
         ssl = True if self.options["ssl"]["value"] == "True" else False
+        sslverify = True if self.options["sslverify"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
         requestdelay = float(self.options["requestdelay"]["value"])
@@ -93,7 +95,7 @@ class Module:
 
 
         regex = re.compile('wp-content/plugins/(.*?)/.*?[css|js].*?ver=([0-9\.]*)')
-        match = regex.findall(requests.get(url, headers={"User-Agent":random.choice(user_agents)}).text)
+        match = regex.findall(requests.get(url, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify).text)
         plugins = []
         for m in match:
             plugin_name = m[0]
@@ -104,7 +106,7 @@ class Module:
                 plugin_found = True
                 plugins.append(plugin_name)
                 plugin_url = url + f"/wp-content/plugins/{plugin_name}"
-                plugin_url_results = plugin_url if requests.get(plugin_url, headers={"User-Agent":random.choice(user_agents)}).status_code == 200 else "X"
+                plugin_url_results = plugin_url if requests.get(plugin_url, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify).status_code == 200 else "X"
                 table.add_row(str(plugin_name), plugin_url_results, plugin_version)
 
         if aggressive:
@@ -112,7 +114,7 @@ class Module:
                 lines = f.readlines()        
             for line in lines[:pluginnumber]:
                 url2 = url + f"/wp-content/plugins/{line}"
-                if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}).status_code == 200:
+                if requests.get(url2, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify).status_code == 200:
                     plugin_found = True
                     table.add_row(str(line), str(url2), str("?"))
                 time.sleep(requestdelay)

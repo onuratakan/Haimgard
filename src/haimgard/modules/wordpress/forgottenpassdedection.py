@@ -12,6 +12,7 @@ class Module:
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": "True", "required": False},
+            "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False}
         }
@@ -38,6 +39,7 @@ class Module:
 
         target = self.options["target"]["value"]
         ssl = True if self.options["ssl"]["value"] == "True" else False
+        sslverify = True if self.options["sslverify"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
 
@@ -61,5 +63,5 @@ class Module:
 
 
         url2 = f"{url}/wp-login.php?action=lostpassword"
-        r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
+        r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify)
         print(f"\033[32m[+]\033[0m WordPress forgottenpass is detected on {url2}") if r.status_code == 200 else print(f"[-] WordPress forgottenpass is not detected on {url2}")

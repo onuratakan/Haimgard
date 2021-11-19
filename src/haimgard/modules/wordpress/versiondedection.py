@@ -14,6 +14,7 @@ class Module:
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": "True", "required": False},
+            "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False}
         }
@@ -39,6 +40,7 @@ class Module:
 
         target = self.options["target"]["value"]
         ssl = True if self.options["ssl"]["value"] == "True" else False
+        sslverify = True if self.options["sslverify"]["value"] == "True" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
 
@@ -61,7 +63,7 @@ class Module:
 
 
 
-        index = requests.get(url, headers={"User-Agent":random.choice(user_agents)})
+        index = requests.get(url, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify)
         version = None
         user_agent = random.choice(user_agents)
         match = re.search(
@@ -72,7 +74,7 @@ class Module:
             version = match.group(1)
         else:
             url2 = f"{url}/index.php/feed"
-            r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)})
+            r = requests.get(url2, headers={"User-Agent":random.choice(user_agents)}, verify = sslverify)
             regex = re.compile('generator>https://wordpress.org/\?v=(.*?)<\/generator')
             match = regex.findall(r.text)
             if match != []:

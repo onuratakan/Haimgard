@@ -43,6 +43,7 @@ class PhoenixShell(cmd.Cmd):
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": "True", "required": False},
+            "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False},
             "timeout": {"value": 1, "required": False},
