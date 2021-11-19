@@ -12,7 +12,8 @@ class Module:
         self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
-            "timeout": {"value": 1, "required": True},
+            "timeout": {"value": 1, "required": False},
+            "commonport": {"value": 1000, "required": False},
         }
 
     def info(self):
@@ -37,6 +38,7 @@ class Module:
 
         target = self.options["target"]["value"]
         timeout = float(self.options["timeout"]["value"])
+        commonport = int(self.options["commonport"]["value"])
 
         most_common_1000_port = [1,3,4,6,7,9,13,17,19,20,21,22,23,24,25,26,30,32,33,37,42,43,49,53,70,79,80,81,82,
     83,84,85,88,89,90,99,100,106,109,110,111,113,119,125,135,139,143,144,146,161,163,179,199,
@@ -99,7 +101,7 @@ class Module:
         table = Table()
         table.add_column("PORT")
         open_port = False
-        for port in most_common_1000_port:
+        for port in most_common_1000_port[:commonport]:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(timeout)
             result = s.connect_ex((target, port))

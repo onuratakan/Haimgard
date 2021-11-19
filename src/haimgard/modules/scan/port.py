@@ -13,8 +13,8 @@ class Module:
         self.options = {
             "target": {"value": None, "required": True},
             "timeout": {"value": None, "required": True},
-            "start": {"value": None, "required": True},
-            "end": {"value": None, "required": True},
+            "start": {"value": 1, "required": True},
+            "end": {"value": 100, "required": True},
         }
 
     def info(self):
