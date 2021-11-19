@@ -111,7 +111,7 @@ class Module:
             s.close()
 
         if open_port:
-            print(f"\033[32m[+]\033[0m Finded some open port on {target}") 
+            print(f"\033[32m[+]\033[0m Finded some open common port on {target}") 
             console.print(table)
         else:
-            print(f"[-] Any open port finded on {target}")
+            print(f"[-] Any open common port finded on {target}")
