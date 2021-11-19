@@ -42,7 +42,7 @@ class PhoenixShell(cmd.Cmd):
 
         self.options = {
             "target": {"value": None, "required": True},
-            "amount": {"value": 100, "required": True},
+            "amount": {"value": 1000, "required": True},
             "ssl": {"value": "True", "required": False},
             "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
@@ -128,6 +128,31 @@ class PhoenixShell(cmd.Cmd):
             logger.error("No module found")
             return          
 
+    def do_runeverything(self, arg):
+        "runeverything"
+    
+        dir = os.path.join(this_dir, "modules")
+        for root,dirs,files in os.walk(dir):
+            for each_dirs in dirs:
+                if not each_dirs == "__pycache__":
+                    found = False
+                    for root,dirs,files in os.walk(os.path.join(this_dir, "modules", each_dirs)):
+                        for each in files:
+                            if each.endswith(".py"):
+                                found = True
+                                module_path = os.path.join(this_dir, "modules", f"{each_dirs}/{os.path.splitext(each)[0]}.py")
+                                spec = importlib.util.spec_from_file_location("module.name", str(module_path))
+                                module = importlib.util.module_from_spec(spec)
+                                spec.loader.exec_module(module) 
+                                the_module = module.Module(logger)
+                                for option in self.options:
+                                    if option in the_module.options:
+                                        the_module.options[option]["value"] = self.options[option]["value"]                    
+                                the_module.run()                   
+
+        if not found:
+            logger.error("No module found")
+            return    
 
     def do_show(self, arg):
         "show"
