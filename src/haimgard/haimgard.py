@@ -145,8 +145,11 @@ class HaimgardShell(cmd.Cmd):
                     the_module = module.Module(logger)
                     for option in self.options:
                         if option in the_module.options:
-                            the_module.options[option]["value"] = self.options[option]["value"]                    
-                    the_module.run()                   
+                            the_module.options[option]["value"] = self.options[option]["value"]                     
+                    try:
+                        the_module.run()  
+                    except BaseException:
+                        logger.exception("An exception was thrown!")                
 
         if not found:
             logger.error("No module found")
@@ -172,7 +175,10 @@ class HaimgardShell(cmd.Cmd):
                                 for option in self.options:
                                     if option in the_module.options:
                                         the_module.options[option]["value"] = self.options[option]["value"]                    
-                                the_module.run()                   
+                                try:
+                                    the_module.run()
+                                except BaseException:
+                                    logger.exception("An exception was thrown!")                                                
 
         if not found:
             logger.error("No module found")
