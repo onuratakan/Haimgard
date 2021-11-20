@@ -15,6 +15,8 @@ from colorama import Fore, Style
 from loguru import logger
 from rich.console import Console
 from rich.table import Table
+from types import FunctionType
+
 
 this_dir, this_filename = os.path.split(__file__)
 
@@ -226,12 +228,14 @@ class HaimgardShell(cmd.Cmd):
         
 
     def do_info(self, arg):
+        "info"
         if self.module is None:
             logger.warning("Please select a module first")
             return
         self.module.info()
 
     def do_clear(self, arg):
+        "clear"
         try:
             os.system("clear")
         except:
@@ -245,10 +249,12 @@ class HaimgardShell(cmd.Cmd):
         self.module = None
         self.prompt = "{}haimgard{} > ".format(Fore.YELLOW, Style.RESET_ALL)
     def do_EOF(self, arg):
+        "EOF"
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
 
     def do_search(self,arg):
+        "search for new modules"
         search_path = os.path.join(this_dir, "modules")
         for root,dirs,files in os.walk(search_path):
             for name in files:
@@ -275,7 +281,20 @@ def main():
     try:
         if len(sys.argv) > 1:
             shell = HaimgardShell()
-            shell.onecmd(' '.join(sys.argv[1:]))
+            arguments = ' '.join(sys.argv[1:])
+
+            method_list = [x for x, y in HaimgardShell.__dict__.items() if type(y) == FunctionType]
+            method_list.remove("__init__")
+            methods = ""
+            for method in method_list:
+                new_method = method.replace("do_", "")
+                methods += f"{new_method}|" if not method_list.index(method) == len(method_list) - 1 else f"{new_method}"
+
+
+            command_list = re.split(r'.(?={methods})'.format(methods=methods), arguments)
+
+            for command in command_list:
+                shell.onecmd(command)
             shell.cmdloop()
         else:
              HaimgardShell().cmdloop()
