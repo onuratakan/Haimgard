@@ -1,6 +1,9 @@
 # TODO
 todo.md
 
+#RECORD-PLAYBACK
+*.haimgard
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
