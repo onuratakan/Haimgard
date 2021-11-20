@@ -39,6 +39,9 @@ for root,dirs,files in os.walk(dir):
 class HaimgardShell(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
+
+        self.file = None
+
         self.module = None
         self.prompt = "{}haimgard{} > ".format(Fore.YELLOW, Style.RESET_ALL)
 
@@ -269,7 +272,34 @@ class HaimgardShell(cmd.Cmd):
                     print("\033[32m[STATUS] Already Found\033[0m")
                     pass
 
-                    
+    def do_record(self, arg):
+        'record test'
+        if arg == "":
+            logger.error("Please give a filename")
+            return
+        self.file = open(arg+".haimgard", 'w')
+    def do_stoprecord(self, arg):
+        'stoprecord'
+        if self.file is not None:
+            self.file.close()
+            self.file = None
+        else:
+            logger.error("No record found")       
+    def do_playback(self, arg):
+        'playback test'
+        if arg == "":
+            logger.error("Please give a filename")
+            return             
+        with open(arg+".haimgard") as f:
+            for command in f.read().splitlines():
+                self.onecmd(command)
+
+    def precmd(self, line):
+        line = line.lower()
+        if self.file and 'playback' not in line and 'stoprecord' not in line:
+            print(line, file=self.file)
+        return line
+                 
                     
 
         
@@ -278,30 +308,34 @@ def main():
     logger.remove(0)
     logger.add(sys.stderr, colorize=True, format="<level>{level}: {message}</level>")
 
-    try:
-        if len(sys.argv) > 1:
-            shell = HaimgardShell()
-            arguments = ' '.join(sys.argv[1:])
+    start = True
+    while True:
+        try:
+            if len(sys.argv) > 1 and start:
+                shell = HaimgardShell()
+                arguments = ' '.join(sys.argv[1:])
 
-            method_list = [x for x, y in HaimgardShell.__dict__.items() if type(y) == FunctionType]
-            method_list.remove("__init__")
-            methods = ""
-            for method in method_list:
-                new_method = method.replace("do_", "")
-                methods += f"{new_method}|" if not method_list.index(method) == len(method_list) - 1 else f"{new_method}"
+                method_list = [x for x, y in HaimgardShell.__dict__.items() if type(y) == FunctionType]
+                method_list.remove("__init__")
+                methods = ""
+                for method in method_list:
+                    new_method = method.replace("do_", "")
+                    methods += f"{new_method}|" if not method_list.index(method) == len(method_list) - 1 else f"{new_method}"
 
 
-            command_list = re.split(r'.(?={methods})'.format(methods=methods), arguments)
+                command_list = re.split(r'.(?={methods})'.format(methods=methods), arguments)
 
-            for command in command_list:
-                shell.onecmd(command)
-            shell.cmdloop()
-        else:
-             HaimgardShell().cmdloop()
-    except KeyboardInterrupt:
-        print()
-        logger.warning("Please use EOF or the exit/quit commands to exit")
-    except Exception:
-        raise
+                for command in command_list:
+                    shell.onecmd(command)
+                shell.cmdloop()
+            else:
+                HaimgardShell().cmdloop()
+        except KeyboardInterrupt:
+            print()
+            logger.warning("Please use EOF or the exit/quit commands to exit")
+        except Exception:
+            raise
+
+        start = False
 if __name__ == "__main__":
     main()
