@@ -34,7 +34,7 @@ for root,dirs,files in os.walk(dir):
             print(f"\033[34mNumber of {each_dirs}:\033[0m",count)
 
 
-class PhoenixShell(cmd.Cmd):
+class HaimgardShell(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.module = None
@@ -273,7 +273,7 @@ def main():
     logger.add(sys.stderr, colorize=True, format="<level>{level}: {message}</level>")
     while True:
         try:
-            PhoenixShell().cmdloop()
+            HaimgardShell().cmdloop()
         except KeyboardInterrupt:
             print()
             logger.warning("Please use EOF or the exit/quit commands to exit")
