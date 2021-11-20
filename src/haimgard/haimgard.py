@@ -271,13 +271,18 @@ def main():
     colorama.init()
     logger.remove(0)
     logger.add(sys.stderr, colorize=True, format="<level>{level}: {message}</level>")
-    while True:
-        try:
-            HaimgardShell().cmdloop()
-        except KeyboardInterrupt:
-            print()
-            logger.warning("Please use EOF or the exit/quit commands to exit")
-        except Exception:
-            raise
+
+    try:
+        if len(sys.argv) > 1:
+            shell = HaimgardShell()
+            shell.onecmd(' '.join(sys.argv[1:]))
+            shell.cmdloop()
+        else:
+             HaimgardShell().cmdloop()
+    except KeyboardInterrupt:
+        print()
+        logger.warning("Please use EOF or the exit/quit commands to exit")
+    except Exception:
+        raise
 if __name__ == "__main__":
     main()
