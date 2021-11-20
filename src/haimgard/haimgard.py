@@ -209,7 +209,12 @@ class HaimgardShell(cmd.Cmd):
             Console().print(table)
 
     def do_set(self, arg):
-        "set target arg"
+        "set target value"
+
+        if arg == "" or len(arg.split()) != 2:
+            logger.error("Please give a option and value")
+            return
+
         key = arg.split()[0]
         value = arg.split()[1]
         finded_option = False
