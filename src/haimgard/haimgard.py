@@ -257,8 +257,8 @@ class HaimgardShell(cmd.Cmd):
         "exit the module"
         self.module = None
         self.prompt = "{}haimgard{} > ".format(Fore.YELLOW, Style.RESET_ALL)
-    def do_EOF(self, arg):
-        "EOF"
+    def do_eof(self, arg):
+        "eof"
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
 
