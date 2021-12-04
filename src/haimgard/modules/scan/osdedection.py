@@ -3,7 +3,7 @@ from rich.table import Table
 import random
 import json
 import nmap
-
+import xml.etree.ElementTree
 
 class Module:
     def __init__(self, logger):
