@@ -44,7 +44,7 @@ class Module:
             for k, v in nm_scan.get('scan').items():
                 if v.get('osmatch'):
                     for i in v.get('osmatch'):
-                        print(f"\033[32m[+]\033[0m {i.get('name')} OS is detected on {v}")
+                        print(f"\033[32m[+]\033[0m {i.get('name')} OS is detected on {k}")
                 else:
                     break
         except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
