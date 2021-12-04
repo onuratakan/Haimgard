@@ -13,7 +13,6 @@ class Module:
         self.author = "Onur Atakan ULUSOY"             
         self.options = {
             "target": {"value": None, "required": True},
-            "port": {"value": 443, "required": False},
         }
 
     def info(self):
@@ -36,33 +35,19 @@ class Module:
 
 
         target = self.options["target"]["value"]
-        port = int(self.options["port"]["value"])
 
         nm = nmap.PortScanner()
-        nm_scan_arguments = f"-p {port} "
-        nm_scan_arguments += "-O"
+        nm_scan_arguments = "-O"
         nm_scan = nm.scan(target, arguments=nm_scan_arguments)
-        for hosts in nm_scan["scan"]:
-            if nm[hosts].has_key('osclass'):
-                for osclass in nm[hosts]['osclass']:
-                    print('OsClass.type : {0}'.format(osclass['type']))
-                    print('OsClass.vendor : {0}'.format(osclass['vendor']))
-                    print('OsClass.osfamily : {0}'.format(osclass['osfamily']))
-                    print('OsClass.osgen : {0}'.format(osclass['osgen']))
-                    print('OsClass.accuracy : {0}'.format(osclass['accuracy']))
-                    print('')
-                    print(f"\033[32m[+]\033[0m OS is detected on {hosts}")
 
-            elif nm[hosts].has_key('osmatch'):
-                for osmatch in nm[hosts]['osmatch']:
-                    print('osmatch.name : {0}'.format(osmatch['name']))
-                    print('osmatch.accuracy : {0}'.format(osmatch['accuracy']))
-                    print('osmatch.line : {0}'.format(osmatch['line']))
-                    print('')
-                    print(f"\033[32m[+]\033[0m OS is detected on {hosts}")
-
-            elif nm[hosts].has_key('fingerprint'):
-                print('Fingerprint : {0}'.format(nm[target]['fingerprint']))
-                print(f"\033[32m[+]\033[0m OS is detected on {hosts}")
-            else:
-                print(f"[-] OS is not detected on {url}")     
+        try:
+            for k, v in nm_scan.get('scan').items():
+                if v.get('osmatch'):
+                    for i in v.get('osmatch'):
+                        print(f"\033[32m[+]\033[0m {i.get('name')} OS is detected on {hosts}")
+                else:
+                    break
+        except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
+            pass
+        except Exception as e:
+            print(f"[-] OS is not detected on {url}")  
