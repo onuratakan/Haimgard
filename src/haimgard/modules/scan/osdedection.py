@@ -44,10 +44,10 @@ class Module:
             for k, v in nm_scan.get('scan').items():
                 if v.get('osmatch'):
                     for i in v.get('osmatch'):
-                        print(f"\033[32m[+]\033[0m {i.get('name')} OS is detected on {hosts}")
+                        print(f"\033[32m[+]\033[0m {i.get('name')} OS is detected on {v}")
                 else:
                     break
         except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
             pass
         except Exception as e:
-            print(f"[-] OS is not detected on {url}")  
+            print(f"[-] OS is not detected on {target}")  
