@@ -8,8 +8,8 @@ import xml.etree.ElementTree
 class Module:
     def __init__(self, logger):
         self.logger = logger
-        self.name = "scan/osdedection"
-        self.description = "OS dedection."
+        self.name = "scan/osservicededection"
+        self.description = "OS and service dedection."
         self.author = "Onur Atakan ULUSOY"             
         self.options = {
             "target": {"value": None, "required": True},
@@ -44,10 +44,10 @@ class Module:
             for k, v in nm_scan.get('scan').items():
                 if v.get('osmatch'):
                     for i in v.get('osmatch'):
-                        print(f"\033[32m[+]\033[0m {i.get('name')} OS is detected on {k}")
+                        print(f"\033[32m[+]\033[0m {i.get('name')} is detected on {k}")
                 else:
                     break
         except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
             pass
         except Exception as e:
-            print(f"[-] OS is not detected on {target}")  
+            print(f"[-] OS or service is not detected on {target}")  
