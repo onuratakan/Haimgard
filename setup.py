@@ -31,6 +31,7 @@ scapy==2.4.5
 beautifulsoup4==4.10.0
 bs4==0.0.1
 soupsieve==2.3.1
+python-nmap==0.7.1
 """,
 entry_points = {
     'console_scripts': ['haimgard=haimgard.haimgard:main'],
