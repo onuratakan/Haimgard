@@ -33,6 +33,8 @@ bs4==0.0.1
 soupsieve==2.3.1
 python-nmap==0.7.1
 pyreadline==2.1
+scapy==2.4.5
+mac-vendor-lookup==0.1.11
 """,
 entry_points = {
     'console_scripts': ['haimgard=haimgard.haimgard:main'],
