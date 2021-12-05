@@ -11,7 +11,7 @@ class Module:
     def __init__(self, logger):
         self.logger = logger
         self.name = "dos/udp"
-        self.description = "udp based dos attack."
+        self.description = "UDP based DoS attack."
         self.author = "Onur Atakan ULUSOY"
         self.runauto = False        
         self.options = {

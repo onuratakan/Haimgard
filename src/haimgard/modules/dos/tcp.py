@@ -9,7 +9,7 @@ class Module:
     def __init__(self, logger):
         self.logger = logger
         self.name = "dos/tcp"
-        self.description = "TCP based dos attack."
+        self.description = "TCP based DoS attack."
         self.author = "Onur Atakan ULUSOY"
         self.runauto = False        
         self.options = {
