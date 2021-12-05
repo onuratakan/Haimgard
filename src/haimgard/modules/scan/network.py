@@ -11,7 +11,7 @@ class Module:
         self.name = "scan/network"
         self.description = "Scan network"
         self.author = "Onur Atakan ULUSOY"
-        self.runauto = True
+        self.runauto = False
         self.options = {
             "target": {"value": None, "required": True},
             "timeout": {"value": 5, "required": True},
