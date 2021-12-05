@@ -122,7 +122,8 @@ class HaimgardShell(cmd.Cmd):
             )
             for option in self.options:
                 if option in self.module.options:
-                    self.module.options[option]["value"] = self.options[option]["value"]
+                    if not self.module.options[option]["value"] is None:
+                        self.module.options[option]["value"] = self.options[option]["value"]
         else:
             logger.error("Module already selected")
 
