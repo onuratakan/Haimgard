@@ -58,7 +58,7 @@ class Module:
             print(f"[-] OS or service is not detected on {target}")  
 
         if found:
-            print(f"[-] OS or service is detected on {target}")
+            print(f"\033[32m[+]\033[0m OS or service is detected on {target}")
             console.print(table)
         else:
             print(f"[-] OS or service is not detected on {target}")
