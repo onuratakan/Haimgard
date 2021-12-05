@@ -48,14 +48,14 @@ class Module:
 
 
         target = self.options["target"]["value"]
-        ssl = True if self.options["ssl"]["value"] == "True" else False
-        sslverify = True if self.options["sslverify"]["value"] == "True" else False
+        ssl = True if self.options["ssl"]["value"] == "1" else False
+        sslverify = True if self.options["sslverify"]["value"] == "1" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
         requestdelay = float(self.options["requestdelay"]["value"])
         themenumber = int(self.options["themenumber"]["value"])
-        aggressive = True if self.options["aggressive"]["value"] == "True" else False
-        update = True if self.options["update"]["value"] ==  "True" else False
+        aggressive = True if self.options["aggressive"]["value"] == "1" else False
+        update = True if self.options["update"]["value"] ==  "1" else False
         url = f"https://{target}:{port}{path}" if ssl else f"http://{target}:{port}{path}"
 
         user_agents = [

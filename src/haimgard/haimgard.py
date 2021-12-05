@@ -48,8 +48,8 @@ class HaimgardShell(cmd.Cmd):
         self.options = {
             "target": {"value": None, "required": True},
             "amount": {"value": 0, "required": False},
-            "ssl": {"value": "True", "required": False},
-            "sslverify": {"value": "True", "required": False},
+            "ssl": {"value": "1", "required": False},
+            "sslverify": {"value": "1", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False},
             "timeout": {"value": 1, "required": False},
@@ -58,8 +58,8 @@ class HaimgardShell(cmd.Cmd):
             "requestdelay": {"value": 0.1, "required": False},
             "pluginnumber": {"value": 100, "required": False},
             "themenumber": {"value": 100, "required": False},
-            "aggressive": {"value": "False", "required": False},
-            "update": {"value": "False", "required": False}
+            "aggressive": {"value": "0", "required": False},
+            "update": {"value": "0", "required": False}
         }        
 
     def do_mode(self, arg):

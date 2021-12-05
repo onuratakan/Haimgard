@@ -40,8 +40,8 @@ class Module:
                 return
 
         target = self.options["target"]["value"]
-        ssl = True if self.options["ssl"]["value"] == "True" else False
-        sslverify = True if self.options["sslverify"]["value"] == "True" else False
+        ssl = True if self.options["ssl"]["value"] == "1" else False
+        sslverify = True if self.options["sslverify"]["value"] == "1" else False
         port = int(self.options["port"]["value"])
         path = self.options["path"]["value"]
 
