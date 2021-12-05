@@ -46,6 +46,7 @@ class Module:
                     for i in v.get('osmatch'):
                         print(f"\033[32m[+]\033[0m {i.get('name')} is detected on {k}")
                 else:
+                    print(f"[-] OS or service is not detected on {target}")
                     break
         except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
             pass
