@@ -8,8 +8,8 @@ import nmap
 class Module:
     def __init__(self, logger):
         self.logger = logger
-        self.name = "scan/commonports"
-        self.description = "Scan most common port"
+        self.name = "scan/servicededection"
+        self.description = "Service dedection."
         self.author = "Onur Atakan ULUSOY"
         self.runauto = True
         self.options = {
@@ -41,28 +41,33 @@ class Module:
 
         console = Console()
         table = Table()
+        table.add_column("SERVICE")
+        table.add_column("VERSION")
         table.add_column("HOST")
         table.add_column("PROTOCOL")
         table.add_column("PORT")
         table.add_column("STATE")
 
         nm = nmap.PortScanner()
-        nm_scan = nm.scan(target)
+        nm_scan = nm.scan(target, arguments="-sV")
 
-        open_port = False
+        open_service = False
         for host in nm.all_hosts():
 
             for proto in nm[host].all_protocols():
                 lport = list(nm[host][proto].keys())
                 lport.sort()
                 for port in lport:   
-                    open_port = True
-                    print(nm[host][proto][port])
-                    table.add_row(str(host), str(proto), str(port), str(nm[host][proto][port]['state']))
+                    if not str(nm[host][proto][port]["product"]) == "":
+                        open_service = True
+                        version = str(nm[host][proto][port]["product"]) + " "
+                        version += str(nm[host][proto][port]["version"]) + " "
+                        version += str(nm[host][proto][port]["extrainfo"]) + " "
+                        table.add_row(str(nm[host][proto][port]["name"]), version, str(host), str(proto), str(port), str(nm[host][proto][port]['state']))
 
 
-        if open_port:
-            print(f"\033[32m[+]\033[0m Founded some open port on {target}") 
+        if open_service:
+            print(f"\033[32m[+]\033[0m Founded some service on {target}") 
             console.print(table)
         else:
-            print(f"[-] Any open port founded on {target}")
+            print(f"[-] Any service founded on {target}")
