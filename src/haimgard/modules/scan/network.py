@@ -58,4 +58,4 @@ class Module:
             print(f"\033[32m[+]\033[0m Found some device on {target}") 
             console.print(table)
         else:
-            print(f"[-] Any open port founded on {target}")
+            print(f"[-] Any device founded on {target}")

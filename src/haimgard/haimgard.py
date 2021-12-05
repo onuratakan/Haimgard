@@ -147,9 +147,6 @@ class HaimgardShell(cmd.Cmd):
                                 the_module.options[option]["value"] = self.options[option]["value"]                     
                     try:
                         if the_module.runauto:
-                            print("(*****************)")
-                            print(the_module.name)
-                            print("(*****************)")
                             the_module.run()  
                     except BaseException:
                         logger.exception("An exception was thrown!")                
