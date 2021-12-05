@@ -20,7 +20,7 @@ class Module:
             "ssl": {"value": None, "required": False},
             "sslverify": {"value": None, "required": False},
             "port": {"value": 443, "required": False},
-            "path": {"value": "", "required": False},
+            "path": {"value": None, "required": False},
             "requestdelay": {"value": 0.1, "required": False},
             "themenumber": {"value": 100, "required": False},
             "aggressive": {"value": False, "required": False},

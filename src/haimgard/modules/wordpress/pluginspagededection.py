@@ -15,7 +15,7 @@ class Module:
             "ssl": {"value": None, "required": False},
             "sslverify": {"value": None, "required": False},
             "port": {"value": 443, "required": False},
-            "path": {"value": "", "required": False}
+            "path": {"value": None, "required": False}
         }
 
     def info(self):
