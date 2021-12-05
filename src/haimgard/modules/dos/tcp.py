@@ -10,7 +10,8 @@ class Module:
         self.logger = logger
         self.name = "dos/tcp"
         self.description = "TCP based dos attack."
-        self.author = "Onur Atakan ULUSOY"        
+        self.author = "Onur Atakan ULUSOY"
+        self.runauto = False        
         self.options = {
             "target": {"value": None, "required": True},
             "port": {"value": 80, "required": False},

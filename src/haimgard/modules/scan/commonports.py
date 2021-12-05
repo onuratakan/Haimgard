@@ -11,6 +11,7 @@ class Module:
         self.name = "scan/commonports"
         self.description = "Scan most common port"
         self.author = "Onur Atakan ULUSOY"
+        self.runauto = True
         self.options = {
             "target": {"value": None, "required": True},
         }

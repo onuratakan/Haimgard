@@ -10,6 +10,7 @@ class Module:
         self.name = "scan/port"
         self.description = "Scan port"
         self.author = "Onur Atakan ULUSOY"
+        self.runauto = False
         self.options = {
             "target": {"value": None, "required": True},
             "timeout": {"value": None, "required": True},

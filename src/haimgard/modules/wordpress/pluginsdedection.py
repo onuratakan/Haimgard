@@ -14,6 +14,7 @@ class Module:
         self.name = "wordpress/pluginsdedection"
         self.description = "WordPress plugins detection."
         self.author = "Onur Atakan ULUSOY"
+        self.runauto = True
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": None, "required": False},

@@ -14,6 +14,7 @@ class Module:
         self.name = "wordpress/themesdedection"
         self.description = "WordPress themes detection."
         self.author = "Onur Atakan ULUSOY"
+        self.runauto = True
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": None, "required": False},

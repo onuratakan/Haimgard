@@ -9,6 +9,7 @@ class Module:
         self.name = "wordpress/xmlrpcdedection"
         self.description = "WordPress xmlrpc detection."
         self.author = "Onur Atakan ULUSOY"
+        self.runauto = True
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": None, "required": False},

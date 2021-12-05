@@ -10,7 +10,8 @@ class Module:
         self.logger = logger
         self.name = "scan/osdedection"
         self.description = "OS dedection."
-        self.author = "Onur Atakan ULUSOY"             
+        self.author = "Onur Atakan ULUSOY"
+        self.runauto = True             
         self.options = {
             "target": {"value": None, "required": True},
         }

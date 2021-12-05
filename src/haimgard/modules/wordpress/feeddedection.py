@@ -9,6 +9,7 @@ class Module:
         self.name = "wordpress/feeddedection"
         self.description = "WordPress feed detection."
         self.author = "Onur Atakan ULUSOY"
+        self.runauto = True
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": None, "required": False},

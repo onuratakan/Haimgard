@@ -146,7 +146,8 @@ class HaimgardShell(cmd.Cmd):
                             if the_module.options[option]["value"] is None:
                                 the_module.options[option]["value"] = self.options[option]["value"]                     
                     try:
-                        the_module.run()  
+                        if the_module.runauto:
+                            the_module.run()  
                     except BaseException:
                         logger.exception("An exception was thrown!")                
 
@@ -176,7 +177,8 @@ class HaimgardShell(cmd.Cmd):
                                         if the_module.options[option]["value"] is None:
                                             the_module.options[option]["value"] = self.options[option]["value"]                    
                                 try:
-                                    the_module.run()
+                                    if the_module.runauto:
+                                        the_module.run()
                                 except BaseException:
                                     logger.exception("An exception was thrown!")                                                
 

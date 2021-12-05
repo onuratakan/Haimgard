@@ -11,7 +11,8 @@ class Module:
         self.logger = logger
         self.name = "scan/wafdedection"
         self.description = "WAF dedection."
-        self.author = "Onur Atakan ULUSOY"             
+        self.author = "Onur Atakan ULUSOY"
+        self.runauto = True             
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": None, "required": False},

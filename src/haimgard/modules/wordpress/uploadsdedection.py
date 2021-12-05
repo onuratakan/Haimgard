@@ -9,6 +9,7 @@ class Module:
         self.name = "wordpress/uploadsdedection"
         self.description = "WordPress uploads detection."
         self.author = "Onur Atakan ULUSOY"
+        self.runauto = True
         self.options = {
             "target": {"value": None, "required": True},
             "ssl": {"value": None, "required": False},
