@@ -13,8 +13,8 @@ class Module:
         self.author = "Onur Atakan ULUSOY"
         self.options = {
             "target": {"value": None, "required": True},
-            "ssl": {"value": "True", "required": False},
-            "sslverify": {"value": "True", "required": False},
+            "ssl": {"value": None, "required": False},
+            "sslverify": {"value": None, "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False}
         }
