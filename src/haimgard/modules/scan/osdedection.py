@@ -8,8 +8,8 @@ import xml.etree.ElementTree
 class Module:
     def __init__(self, logger):
         self.logger = logger
-        self.name = "scan/osservicededection"
-        self.description = "OS and service dedection."
+        self.name = "scan/osdedection"
+        self.description = "OS dedection."
         self.author = "Onur Atakan ULUSOY"             
         self.options = {
             "target": {"value": None, "required": True},
@@ -42,7 +42,7 @@ class Module:
 
         console = Console()
         table = Table()
-        table.add_column("OS/Service")
+        table.add_column("OS")
         table.add_column("HOST")
         found = False
         try:
@@ -55,10 +55,10 @@ class Module:
             pass
         except Exception as e:
             logger.exception(e)
-            print(f"[-] OS or service is not detected on {target}")  
+            print(f"[-] OS is not detected on {target}")  
 
         if found:
-            print(f"\033[32m[+]\033[0m OS or service is detected on {target}")
+            print(f"\033[32m[+]\033[0m OS is detected on {target}")
             console.print(table)
         else:
-            print(f"[-] OS or service is not detected on {target}")
+            print(f"[-] OS is not detected on {target}")
