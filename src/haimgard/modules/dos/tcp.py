@@ -14,8 +14,8 @@ class Module:
         self.runauto = False        
         self.options = {
             "target": {"value": None, "required": True},
-            "port": {"value": 80, "required": False},
-            "amount": {"value": 1000, "required": True},
+            "port": {"value": None, "required": False},
+            "amount": {"value": None, "required": True},
         }
 
     def info(self):
