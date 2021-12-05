@@ -46,7 +46,7 @@ class Module:
         table.add_column("STATE")
 
         nm = nmap.PortScanner()
-        nm_scan = nmap.scan(target)
+        nm_scan = nm.scan(target)
 
         open_port = False
         for host in nm.all_hosts():
