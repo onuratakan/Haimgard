@@ -1,7 +1,6 @@
 import requests
 from rich.console import Console
 from rich.table import Table
-from scapy.all import UDP
 import socket
 import random
 import os
