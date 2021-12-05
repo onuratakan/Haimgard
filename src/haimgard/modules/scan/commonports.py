@@ -57,7 +57,6 @@ class Module:
                 lport.sort()
                 for port in lport:   
                     open_port = True
-                    print(nm[host][proto][port])
                     table.add_row(str(host), str(proto), str(port), str(nm[host][proto][port]['state']))
 
 
