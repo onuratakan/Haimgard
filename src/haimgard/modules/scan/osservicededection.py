@@ -40,16 +40,25 @@ class Module:
         nm_scan_arguments = "-O"
         nm_scan = nm.scan(target, arguments=nm_scan_arguments)
 
+        console = Console()
+        table = Table()
+        table.add_column("OS/Service")
+        table.add_column("HOST")
+        found = False
         try:
             for k, v in nm_scan.get('scan').items():
                 if v.get('osmatch'):
+                    found = True
                     for i in v.get('osmatch'):
-                        print(f"\033[32m[+]\033[0m {i.get('name')} is detected on {k}")
-                else:
-                    print(f"[-] OS or service is not detected on {target}")
-                    break
+                        table.add_row(i.get('name'), k)
         except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
             pass
         except Exception as e:
             logger.exception(e)
             print(f"[-] OS or service is not detected on {target}")  
+
+        if found:
+            print(f"[-] OS or service is detected on {target}")
+            console.print(table)
+        else:
+            print(f"[-] OS or service is not detected on {target}")
