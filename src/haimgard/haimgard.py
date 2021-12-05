@@ -237,11 +237,14 @@ class HaimgardShell(cmd.Cmd):
 
     def do_run(self,arg):
         "run"
-        try:
-            self.module.run()
-        except BaseException:
-            logger.exception("An exception was thrown!")
-        
+        if self.module is not None:
+            try:
+                self.module.run()
+            except BaseException:
+                logger.exception("An exception was thrown!")
+        else:
+            logger.error("No module found")
+            return         
 
     def do_info(self, arg):
         "info"
