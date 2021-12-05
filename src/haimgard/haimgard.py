@@ -143,7 +143,8 @@ class HaimgardShell(cmd.Cmd):
                     the_module = module.Module(logger)
                     for option in self.options:
                         if option in the_module.options:
-                            the_module.options[option]["value"] = self.options[option]["value"]                     
+                            if the_module.options[option]["value"] is None:
+                                the_module.options[option]["value"] = self.options[option]["value"]                     
                     try:
                         the_module.run()  
                     except BaseException:
@@ -172,7 +173,8 @@ class HaimgardShell(cmd.Cmd):
                                 the_module = module.Module(logger)
                                 for option in self.options:
                                     if option in the_module.options:
-                                        the_module.options[option]["value"] = self.options[option]["value"]                    
+                                        if the_module.options[option]["value"] is None:
+                                            the_module.options[option]["value"] = self.options[option]["value"]                    
                                 try:
                                     the_module.run()
                                 except BaseException:
