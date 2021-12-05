@@ -51,4 +51,5 @@ class Module:
         except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
             pass
         except Exception as e:
+            logger.exception(e)
             print(f"[-] OS or service is not detected on {target}")  
