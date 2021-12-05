@@ -47,15 +47,14 @@ class HaimgardShell(cmd.Cmd):
 
         self.options = {
             "target": {"value": None, "required": True},
-            "amount": {"value": 1000, "required": False},
+            "amount": {"value": 0, "required": False},
             "ssl": {"value": "True", "required": False},
             "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
             "path": {"value": "", "required": False},
             "timeout": {"value": 1, "required": False},
-            "commonport": {"value": 1000, "required": False},
-            "start": {"value": 1, "required": False},
-            "end": {"value": 100, "required": False},
+            "start": {"value": 0, "required": False},
+            "end": {"value": 0, "required": False},
             "requestdelay": {"value": 0.1, "required": False},
             "pluginnumber": {"value": 100, "required": False},
             "themenumber": {"value": 100, "required": False},
@@ -71,12 +70,10 @@ class HaimgardShell(cmd.Cmd):
 
         if arg == "passive":
             self.options["amount"]["value"] = 0
-            self.options["commonport"]["value"] = 0
             self.options["start"]["value"] = 0
             self.options["end"]["value"] = 0
         elif arg == "normal":
             self.options["amount"]["value"] = 100
-            self.options["commonport"]["value"] = 1000
             self.options["start"]["value"] = 1
             self.options["end"]["value"] = 100
         else:
