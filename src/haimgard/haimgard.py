@@ -47,7 +47,7 @@ class HaimgardShell(cmd.Cmd):
 
         self.options = {
             "target": {"value": None, "required": True},
-            "amount": {"value": 1000, "required": True},
+            "amount": {"value": 1000, "required": False},
             "ssl": {"value": "True", "required": False},
             "sslverify": {"value": "True", "required": False},
             "port": {"value": 443, "required": False},
