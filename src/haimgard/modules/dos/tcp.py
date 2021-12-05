@@ -55,6 +55,6 @@ class Module:
             # send the packets
             s.send(packet.encode())
         s.close()
-        print(f"\033[32m[+]\033[0m Finished tcp_dos DoS attack on {target}-{port}")
+        print(f"\033[32m[+]\033[0m Finished TCP based DoS attack on {target}-{port}")
 
 
