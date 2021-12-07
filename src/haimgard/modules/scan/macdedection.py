@@ -12,7 +12,7 @@ class Module:
         self.name = "scan/wafdedection"
         self.description = "MAC dedection."
         self.author = "Onur Atakan ULUSOY"
-        self.runauto = True             
+        self.runauto = False             
         self.options = {
             "target": {"value": None, "required": True},
             "timeout": {"value": 5, "required": True},
