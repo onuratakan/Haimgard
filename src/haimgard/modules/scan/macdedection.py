@@ -4,7 +4,7 @@ from rich.table import Table
 import random
 import json
 import re
-from scapy.all import send, IP, ICMP, srp, ARP, Ether, sniff, TCP, UDP, DNS
+from scapy.all import srp, ARP, Ether
 
 class Module:
     def __init__(self, logger):
@@ -41,7 +41,7 @@ class Module:
         timeout = float(self.options["timeout"]["value"])
 
         result = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=target), timeout=timeout, verbose=0)[0]
-        result  = [print(f"\033[32m[+]\033[0m {received.hwsrc }MAC is detected on {target}") for sent, received in result]
+        result  = [print(f"\033[32m[+]\033[0m {received.hwsrc } MAC is detected on {target}") for sent, received in result]
         if len(result) == 0:
             print(f"[-] MAC is not detected on {url}")
         
