@@ -9,7 +9,7 @@ from scapy.all import srp, ARP, Ether
 class Module:
     def __init__(self, logger):
         self.logger = logger
-        self.name = "scan/wafdedection"
+        self.name = "scan/macdedection"
         self.description = "MAC dedection."
         self.author = "Onur Atakan ULUSOY"
         self.runauto = False             
