@@ -43,6 +43,6 @@ class Module:
         result = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=target), timeout=timeout, verbose=0)[0]
         result  = [print(f"\033[32m[+]\033[0m {received.hwsrc } MAC is detected on {target}") for sent, received in result]
         if len(result) == 0:
-            print(f"[-] MAC is not detected on {url}")
+            print(f"[-] MAC is not detected on {target}")
         
 
