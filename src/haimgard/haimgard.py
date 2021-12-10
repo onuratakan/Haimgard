@@ -325,10 +325,11 @@ def main():
     logger.add(sys.stderr, colorize=True, format="<level>{level}: {message}</level>")
 
     start = True
+    shell = HaimgardShell()
     while True:
         try:
             if len(sys.argv) > 1 and start:
-                shell = HaimgardShell()
+                
                 arguments = ' '.join(sys.argv[1:])
 
                 method_list = [x for x, y in HaimgardShell.__dict__.items() if type(y) == FunctionType]
@@ -345,7 +346,7 @@ def main():
                     shell.onecmd(command)
                 shell.cmdloop()
             else:
-                HaimgardShell().cmdloop()
+                shell.cmdloop()
         except KeyboardInterrupt:
             print()
             logger.warning("Please use EOF or the exit/quit commands to exit")
