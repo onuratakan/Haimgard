@@ -11,7 +11,7 @@ class Module:
         self.name = "scan/scriptvuln"
         self.description = "Script vuln dedection."
         self.author = "Onur Atakan ULUSOY"
-        self.runauto = False             
+        self.runauto = True             
         self.options = {
             "target": {"value": None, "required": True},
         }

@@ -11,7 +11,7 @@ class Module:
         self.name = "scan/scriptfuzzer"
         self.description = "Script fuzzer dedection."
         self.author = "Onur Atakan ULUSOY"
-        self.runauto = False             
+        self.runauto = True             
         self.options = {
             "target": {"value": None, "required": True},
         }
