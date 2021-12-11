@@ -11,7 +11,7 @@ class Module:
         self.name = "scan/scriptexternal"
         self.description = "Script external dedection."
         self.author = "Onur Atakan ULUSOY"
-        self.runauto = True             
+        self.runauto = False             
         self.options = {
             "target": {"value": None, "required": True},
         }
