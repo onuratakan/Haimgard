@@ -51,15 +51,13 @@ class Module:
             for proto in nm[host].all_protocols():
                 lport = list(nm[host][proto].keys())
                 lport.sort()
-                for port in lport:   
-                        open_service = True
+                for port in lport:
                         if nm[host][proto][port].get("script") is not None:
                             default = ""
                             for key, value in nm[host][proto][port]["script"].items():
                                 default += f"{key} : {value}\n"
-                        else:
-                            default = "None"
-                        table.add_row(str(nm[host][proto][port]["name"]) + "/" + str(proto) + "/" + str(port), default)
+                            open_service = True
+                            table.add_row(str(nm[host][proto][port]["name"]) + "/" + str(proto) + "/" + str(port), default)
 
         if open_service:
             print(f"\033[32m[+]\033[0m Founded some script default on {target}")
