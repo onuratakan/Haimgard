@@ -16,6 +16,7 @@ from loguru import logger
 from rich.console import Console
 from rich.table import Table
 from types import FunctionType
+from threading import Thread
 
 
 this_dir, this_filename = os.path.split(__file__)
@@ -147,7 +148,7 @@ class HaimgardShell(cmd.Cmd):
                                 the_module.options[option]["value"] = self.options[option]["value"]                     
                     try:
                         if the_module.runauto:
-                            the_module.run()  
+                            Thread(target = the_module.run).start()
                     except BaseException:
                         logger.exception("An exception was thrown!")                
 
@@ -178,7 +179,7 @@ class HaimgardShell(cmd.Cmd):
                                             the_module.options[option]["value"] = self.options[option]["value"]                    
                                 try:
                                     if the_module.runauto:
-                                        the_module.run()
+                                        Thread(target = the_module.run).start()
                                 except BaseException:
                                     logger.exception("An exception was thrown!")                                                
 
