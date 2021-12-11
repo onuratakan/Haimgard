@@ -56,6 +56,7 @@ class Module:
                 lport = list(nm[host][proto].keys())
                 lport.sort()
                 for port in lport:   
+                    if not nm[host][proto][port]["product"] == "":
                         open_service = True
                         version = str(nm[host][proto][port]["product"]) + " "
                         version += str(nm[host][proto][port]["version"]) + " "
