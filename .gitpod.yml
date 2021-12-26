@@ -1,6 +1,4 @@
 tasks:
-  - name: Installing nmap
-    init: sudo apt-get install nmap -y
-  - name: Installing and running haimgard
-    init: pip3 install .
+  - name: Installing and running
+    init: sudo apt-get install nmap -y && pip3 install .
     command: haimgard
