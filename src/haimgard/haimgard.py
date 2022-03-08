@@ -19,23 +19,6 @@ from types import FunctionType
 from threading import Thread
 
 
-this_dir, this_filename = os.path.split(__file__)
-
-print(cowsay.get_output_string('daemon', "Haimgard"))
-
-
-#Modules
-dir = os.path.join(this_dir, "modules")
-for root,dirs,files in os.walk(dir):
-    for each_dirs in dirs:
-        if not each_dirs == "__pycache__":
-            count = 0
-            for root,dirs,files in os.walk(os.path.join(dir, each_dirs)):
-                for each in files:
-                    if each.endswith(".py"):
-                        count += 1
-            print(f"\033[34mNumber of {each_dirs}:\033[0m",count)
-
 
 class HaimgardShell(cmd.Cmd):
     def __init__(self):
@@ -61,7 +44,27 @@ class HaimgardShell(cmd.Cmd):
             "themenumber": {"value": 100, "required": False},
             "aggressive": {"value": "0", "required": False},
             "update": {"value": "0", "required": False}
-        }        
+        }
+
+        self.this_dir, self.this_filename = os.path.split(__file__)
+
+
+        print(cowsay.get_output_string('daemon', "Haimgard"))
+
+    def do_modules(self, arg):
+        "modules"
+        path = os.path.join(self.this_dir, "modules")
+        for dirpath, dirnames, filenames in os.walk(path):
+            directory_level = dirpath.replace(path, "")
+            directory_level = directory_level.count(os.sep)
+            indent = " " * 4
+            if not os.path.basename(dirpath) == "__pycache__" and not os.path.basename(dirpath) == "modules":
+                print("\033[34m{}{}\033[0m".format(indent*directory_level, os.path.basename(dirpath)))
+
+                for f in filenames:
+                    print("{}{}".format(indent*(directory_level+1), f.replace(".py", "")))
+        
+
 
     def do_mode(self, arg):
         "mode passive/normal"
@@ -78,31 +81,14 @@ class HaimgardShell(cmd.Cmd):
             self.options["start"]["value"] = 1
             self.options["end"]["value"] = 100
         else:
-            logger.error("No mode found") 
-
-    def do_list(self, arg):
-        "list wordpress"
-        if arg == "":
-            logger.error("Please give a category")
-            return          
-        dir = os.path.join(this_dir, "modules", arg)
-        found = False
-        for root,dirs,files in os.walk(dir):
-            for each in files:
-                if each.endswith(".py"):
-                    found = True
-                    print(f"- {os.path.splitext(each)[0]}") 
-
-        if not found:
-            logger.error("No module found")
-            return          
+            logger.error("No mode found")          
 
     def do_use(self, arg):
-        "use wordpress/adminpagededection"
+        "use scan/basic/wordpress/adminpagededection"
         args = arg.split()
         if self.module is None:
             try:
-                module_path = os.path.join(this_dir, "modules", f"{args[0]}.py")
+                module_path = os.path.join(self.this_dir, "modules", f"{args[0]}.py")
             except:
                 logger.error("No module specified")
                 return
@@ -131,13 +117,12 @@ class HaimgardShell(cmd.Cmd):
         if arg == "":
             logger.error("Please give a category")
             return          
-        dir = os.path.join(this_dir, "modules", arg)
+        dir = os.path.join(self.this_dir, "modules", arg)
         found = False
-        for root,dirs,files in os.walk(dir):
-            for each in files:
+        for each in os.listdir(dir):
                 if each.endswith(".py"):
                     found = True
-                    module_path = os.path.join(this_dir, "modules", f"{arg}/{os.path.splitext(each)[0]}.py")
+                    module_path = os.path.join(self.this_dir, "modules", f"{arg}/{os.path.splitext(each)[0]}.py")
                     spec = importlib.util.spec_from_file_location("module.name", str(module_path))
                     module = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(module) 
@@ -155,37 +140,7 @@ class HaimgardShell(cmd.Cmd):
         if not found:
             logger.error("No module found")
             return          
-
-    def do_runeverything(self, arg):
-        "runeverything"
-    
-        dir = os.path.join(this_dir, "modules")
-        for root,dirs,files in os.walk(dir):
-            for each_dirs in dirs:
-                if not each_dirs == "__pycache__":
-                    found = False
-                    for root,dirs,files in os.walk(os.path.join(this_dir, "modules", each_dirs)):
-                        for each in files:
-                            if each.endswith(".py"):
-                                found = True
-                                module_path = os.path.join(this_dir, "modules", f"{each_dirs}/{os.path.splitext(each)[0]}.py")
-                                spec = importlib.util.spec_from_file_location("module.name", str(module_path))
-                                module = importlib.util.module_from_spec(spec)
-                                spec.loader.exec_module(module) 
-                                the_module = module.Module(logger)
-                                for option in self.options:
-                                    if option in the_module.options:
-                                        if the_module.options[option]["value"] is None:
-                                            the_module.options[option]["value"] = self.options[option]["value"]                    
-                                try:
-                                    if the_module.runauto:
-                                        Thread(target = the_module.run).start()
-                                except BaseException:
-                                    logger.exception("An exception was thrown!")                                                
-
-        if not found:
-            logger.error("No module found")
-            return    
+                                               
 
     def do_show(self, arg):
         "show"
@@ -273,21 +228,6 @@ class HaimgardShell(cmd.Cmd):
         os.system("find . -name '*.pyc' -delete")
         sys.exit(1)
 
-    def do_search(self,arg):
-        "search for new modules"
-        search_path = os.path.join(this_dir, "modules")
-        for root,dirs,files in os.walk(search_path):
-            for name in files:
-                name_list = []
-                name_list.append(root)
-                name_list.append(name)
-                str ='/'
-                string_list = str.join(name_list)
-                #print(string_list)
-                
-                if arg in string_list:
-                    print("\033[32m[STATUS] Already Found\033[0m")
-                    pass
 
     def do_record(self, arg):
         'record test'
