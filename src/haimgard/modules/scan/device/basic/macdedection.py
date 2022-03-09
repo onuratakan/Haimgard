@@ -1,10 +1,8 @@
 import requests
 from rich.console import Console
 from rich.table import Table
-import random
-import json
-import re
-from scapy.all import srp, ARP, Ether
+import socket
+
 
 class Module:
     def __init__(self, logger):
@@ -12,7 +10,7 @@ class Module:
         self.name = "macdedection"
         self.description = "MAC dedection."
         self.author = "Onur Atakan ULUSOY"
-        self.runauto = False             
+        self.runauto = True             
         self.options = {
             "target": {"value": None, "required": True},
             "timeout": {"value": 5, "required": True},
@@ -40,9 +38,11 @@ class Module:
         target = self.options["target"]["value"]
         timeout = float(self.options["timeout"]["value"])
 
-        result = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=target), timeout=timeout, verbose=0)[0]
-        result  = [print(f"\033[32m[+]\033[0m {received.hwsrc } MAC is detected on {target}") for sent, received in result]
-        if len(result) == 0:
+        try:
+            from scapy.all import getmacbyip
+            print(f"\033[32m[+]\033[0m {getmacbyip(socket.gethostbyname(target))} is the MAC adress of {target}")
+        except Exception as e:
+            self.logger.exception(e)
             print(f"[-] MAC is not detected on {target}")
         
 

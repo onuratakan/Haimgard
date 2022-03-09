@@ -43,7 +43,8 @@ class HaimgardShell(cmd.Cmd):
             "pluginnumber": {"value": 100, "required": False},
             "themenumber": {"value": 100, "required": False},
             "aggressive": {"value": "0", "required": False},
-            "update": {"value": "0", "required": False}
+            "update": {"value": "0", "required": False},
+            "insname": {"value": None, "required": False},
         }
 
         self.this_dir, self.this_filename = os.path.split(__file__)
@@ -116,26 +117,44 @@ class HaimgardShell(cmd.Cmd):
         "runall worpress"
         if arg == "":
             logger.error("Please give a category")
-            return          
+            return
+
+        def run_module(module_path):
+                        spec = importlib.util.spec_from_file_location("module.name", str(module_path))
+                        module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(module) 
+                        the_module = module.Module(logger)
+                        for option in self.options:
+                            if option in the_module.options:
+                                if the_module.options[option]["value"] is None:
+                                    the_module.options[option]["value"] = self.options[option]["value"]                     
+                        try:
+                            if the_module.runauto:
+                                Thread(target = the_module.run).start()
+                        except BaseException:
+                            logger.exception("An exception was thrown!")  
+
+
         dir = os.path.join(self.this_dir, "modules", arg)
         found = False
         for each in os.listdir(dir):
-                if each.endswith(".py"):
-                    found = True
-                    module_path = os.path.join(self.this_dir, "modules", f"{arg}/{os.path.splitext(each)[0]}.py")
-                    spec = importlib.util.spec_from_file_location("module.name", str(module_path))
-                    module = importlib.util.module_from_spec(spec)
-                    spec.loader.exec_module(module) 
-                    the_module = module.Module(logger)
-                    for option in self.options:
-                        if option in the_module.options:
-                            if the_module.options[option]["value"] is None:
-                                the_module.options[option]["value"] = self.options[option]["value"]                     
-                    try:
-                        if the_module.runauto:
-                            Thread(target = the_module.run).start()
-                    except BaseException:
-                        logger.exception("An exception was thrown!")                
+                    if each.endswith(".py"):
+                        found = True
+                        module_path = os.path.join(self.this_dir, "modules", f"{arg}/{os.path.splitext(each)[0]}.py")
+                        run_module(module_path)
+                    elif not each == "__pycache__":
+                        for sub_each in os.listdir(os.path.join(self.this_dir, "modules", arg, each)):
+                            if sub_each.endswith(".py"):
+                                found = True
+                                module_path = os.path.join(self.this_dir, "modules", f"{arg}/{each}/{os.path.splitext(sub_each)[0]}.py")
+                                run_module(module_path)
+                            elif not sub_each == "__pycache__":
+                                for subsub_each in os.listdir(os.path.join(self.this_dir, "modules", arg, each, sub_each)):
+                                    if subsub_each.endswith(".py"):
+                                        found = True
+                                        module_path = os.path.join(self.this_dir, "modules", f"{arg}/{each}/{sub_each}/{os.path.splitext(subsub_each)[0]}.py")
+                                        run_module(module_path)
+              
 
         if not found:
             logger.error("No module found")
