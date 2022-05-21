@@ -8,8 +8,8 @@ import nmap
 class Module:
     def __init__(self, logger):
         self.logger = logger
-        self.name = "servicededection"
-        self.description = "Service dedection."
+        self.name = "serviceversiondedection"
+        self.description = "Service version dedection."
         self.author = "Onur Atakan ULUSOY"
         self.runauto = True
         self.options = {

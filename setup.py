@@ -36,6 +36,7 @@ pyreadline==2.1
 scapy==2.4.5
 mac-vendor-lookup==0.1.11
 python_whois==0.7.3
+requests==2.27.1
 """,
 entry_points = {
     'console_scripts': ['haimgard=haimgard.haimgard:main'],

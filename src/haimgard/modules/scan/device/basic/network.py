@@ -50,8 +50,12 @@ class Module:
         packet = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=f"{target}/24")
         result = srp(packet, timeout=timeout, verbose=0)[0]
         for sent, received in result:
+            try:
+                mac = MacLookup().lookup(received.hwsrc)
+            except:
+                mac = "Unknown"
             found = True
-            table.add_row(received.psrc, received.hwsrc, MacLookup().lookup(received.hwsrc))
+            table.add_row(received.psrc, received.hwsrc, mac)
 
 
         if found:
